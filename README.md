@@ -8,6 +8,7 @@ K-Nearest Neighbors STreaming Unit for FPGA (KNNStuff) is a scalable RTL impleme
 5. [Build the block diagram](#build-the-block-diagram)
 6. [Create an application project](#create-an-application-project)
 7. [Run KNNStuff](#run-knn-stuff)
+8. [Customizing KNNStuff parameters](#customizing-knnstuff-parameters)
 
 ## Content of this repository
 * `/rtl`: contains the VHDL files and the Xilinx IP files to generate the custom IP cores;
@@ -60,6 +61,11 @@ Select *Next*, *Edit IP*, and *Finish*.
 
 To add the sources of the first IP, right-click on *Design Sources* and select *Add Sources*, *Add or create design sources*, and *Add Files*. Navigate to `rtl/knnaccelerator`, select all the files and press *Finish*. Select the files named *knnAccelerator_v1_0_m_axis*, *knnAccelerator_v1_0_sb_axis*, and *knnAccelerator_v1_0_sp_axis*, right-click and *Remove file from project...*.
 
+In the *Sources* menu, find the *Libraries* tab. Select the file *knnCluster_Pkg.vhd*, under *Design Sources*, *VHDL*, *xil_defaultlib*. Right-click and select *Set Library*. Write *knnCluster* and select *Ok*.
+
+
+
 ## Build the block diagram
 ## Create an application project
 ## Run KNNStuff
+## Customizing KNNStuff parameters
