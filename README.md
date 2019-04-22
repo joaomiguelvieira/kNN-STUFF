@@ -26,7 +26,15 @@ To use KNNStuff, the minimum requisits are demanded:
 ## Create a new project
 First, you need to create a new project that will contain the synthetizable block design to program the SoC. To do that, open Vivado 2018.3 and create a new project by selecting //Create Project// from the //Quick Start// menu.
 
-/home/joaovieira/Pictures/Screenshot from 2019-04-22 15-33-27.png
+![img/new_project1.png]
+
+Select a project name and location.
+
+![img/new_project2.png]
+
+Select RTL project.
+
+![img/new_project3.png]
 
 ## Package the IPs
 ## Build the block diagram
