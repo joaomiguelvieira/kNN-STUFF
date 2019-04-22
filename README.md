@@ -22,8 +22,10 @@ To use KNNStuff, the minimum requisits are demanded:
 * A Xilinx SoC (this tutorial uses the Diligent Zybo board, but all procedures are also valid for the ZedBoard);
 * A micro USB cable to connect the board to the host computer.
 
+## Create a new project
+First, the custom IPs that allow to accelerate the KNN algorithm need to be build from the VHDL source files. To do that, open Vivado 2018.3 and create a new project
+
 ## Package the IPs
-First, the custom IPs that allow to accelerate the KNN algorithm need to be build from the VHDL source files. To do that, open Vivado 2018.3 and select **
 ## Build the block diagram
 ## Create an application project
 ## Run KNNStuff
