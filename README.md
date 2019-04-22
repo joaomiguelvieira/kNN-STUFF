@@ -19,12 +19,13 @@ To use KNNStuff, the minimum requisits are demanded:
 * A host computer running Linux;
 * Xilinx Vivado 2018.3 **(and only 2018.3)**:
   * Follow [this](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/2018-3.html) link to download);
-  * Do not forget to install the cable drivers (execute the script located at `<vivado_install_dir>/data/xicom/cable_drivers/lin64/install_script/install_drivers/install_drivers`);
+  * Download and install the board files (find instructions [here](https://reference.digilentinc.com/reference/software/vivado/board-files));
+  * Do not forget to install the cable drivers (execute the script located at `<vivado_install_dir>/data/xicom/cable_drivers/lin64/install_script/install_drivers/install_drivers`).
 * A Xilinx SoC **(this tutorial uses the Diligent Zybo board, but all procedures are also valid for the ZedBoard)**;
 * A micro USB cable to connect the board to the host computer.
 
 ## Create a new project
-First, you need to create a new project that will contain the synthetizable block design to program the SoC. To do that, open Vivado 2018.3 and create a new project by selecting //Create Project// from the //Quick Start// menu.
+First, you need to create a new project that will contain the synthetizable block design to program the SoC. To do that, open Vivado 2018.3 and create a new project by selecting *Create Project* from the *Quick Start* menu.
 
 ![new_project1](img/new_project1.png "New Project 1")
 
@@ -32,9 +33,21 @@ Select a project name and location.
 
 ![new_project2](img/new_project2.png "New Project 2")
 
-Select //RTL project//.
+Select *RTL project*.
 
 ![new_project3](img/new_project3.png "New Project 3")
+
+Make sure that the *Target language* is VLDH.
+
+![new_project4](img/new_project4.png "New Project 4")
+
+Press *Next* twice without adding any constraints.
+
+From the menu *Boards*, select *Zybo*.
+
+![new_project5](img/new_project5.png "New Project 5")
+
+Finally, press *Next* and *Finish* to open the newly created project.
 
 ## Package the IPs
 ## Build the block diagram
