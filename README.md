@@ -32,7 +32,7 @@ Select a project name and location.
 
 ![new_project2](img/new_project2.png "New Project 2")
 
-Select RTL project.
+Select //RTL project//.
 
 ![new_project3](img/new_project3.png "New Project 3")
 
