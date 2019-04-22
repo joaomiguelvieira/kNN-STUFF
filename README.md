@@ -24,7 +24,9 @@ To use KNNStuff, the minimum requisits are demanded:
 * A micro USB cable to connect the board to the host computer.
 
 ## Create a new project
-First, you need to create a new project that will contain the synthetizable block design to program the SoC. To do that, open Vivado 2018.3 and create a new project
+First, you need to create a new project that will contain the synthetizable block design to program the SoC. To do that, open Vivado 2018.3 and create a new project by selecting //Create Project// from the //Quick Start// menu.
+
+/home/joaovieira/Pictures/Screenshot from 2019-04-22 15-33-27.png
 
 ## Package the IPs
 ## Build the block diagram
