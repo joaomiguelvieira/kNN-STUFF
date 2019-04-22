@@ -16,12 +16,14 @@ K-Nearest Neighbors STreaming Unit for FPGA (KNNStuff) is a scalable RTL impleme
 ## Pre-requisites
 To use KNNStuff, the minimum requisits are demanded:
 * A host computer running Linux;
-* Xilinx Vivado 2018.3 (follow [this](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/2018-3.html) link to download);
+* Xilinx Vivado 2018.3:
+  * Follow [this](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/2018-3.html) link to download);
+  * Do not forget to install the cable drivers (execute the script located at `<vivado_install_dir>/data/xicom/cable_drivers/lin64/install_script/install_drivers/install_drivers`);
 * A Xilinx SoC (this tutorial uses the Diligent Zybo board, but all procedures are also valid for the ZedBoard);
-* A micro USB cable to connect the board to the host computer;
-
+* A micro USB cable to connect the board to the host computer.
 
 ## Package the IPs
+First, the custom IPs that allow to accelerate the KNN algorithm need to be build from the VHDL source files. To do that, open Vivado 2018.3 and select **
 ## Build the block diagram
 ## Create an application project
 ## Run KNNStuff
