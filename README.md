@@ -50,6 +50,16 @@ From the menu *Boards*, select *Zybo*.
 Finally, press *Next* and *Finish* to open the newly created project.
 
 ## Package the IPs
+After creating a new project, the custom IPs need to be packaged and build from the VHDL sources. To do that, select *Tools* and then *Create and Package New IP...*. Press *Next* and select *Create a new AXI4 peripheral*. Name the first IP "knnAccelerator" and press *Next*. Then, it will be necessary to create three AXI4 Stream interfaces (two slaves and one master). In the end, the list of interfaces should look the following:
+
+![new_project6](img/new_project6.png "New Project 6")
+
+**Note that you should create the interfaces with exactly these names and parameters. The master inteerface should have *Master* as *Interface Mode* instead of *Slave*.**
+
+Select *Next*, *Edit IP*, and *Finish*.
+
+To add the sources of the first IP, right-click on *Design Sources* and select *Add Sources*, *Add or create design sources*, and *Add Files*. Navigate to `rtl/knnaccelerator`, select all the files and press *Finish*. Select the files named *knnAccelerator_v1_0_m_axis*, *knnAccelerator_v1_0_sb_axis*, and *knnAccelerator_v1_0_sp_axis*, right-click and *Remove file from project...*.
+
 ## Build the block diagram
 ## Create an application project
 ## Run KNNStuff
