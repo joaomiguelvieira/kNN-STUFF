@@ -217,7 +217,7 @@ The dataset that goes with the example in this tutorial is the [Iris dataset](ht
 If you change the dataset file, find the `.cfg` file with the same name (or similar) to the `.bin` file, and change the [lines from 15 to 18 of `src/KNN.c`](src/KNN.c#L15) accordingly to its content.
 
 ### Software run modes
-The KNN classifier provides four modes: debug, only software, only hardware, both software and hardware.
+The KNN classifier provides four modes: debug, only software, only hardware, both software and hardware ([lines 20 to 22 of `src/KNN.c`](src/KNN.c#L20)).
 
 To run in debug mode, the `DEBUG` flag must be set. In this mode, both the hardware and the software versions of the KNN classifier are run, and the results of the classification are dumped to the output terminal. This mode has the single objective of verifying the correct function of the system and does not provide information on timing.
 
