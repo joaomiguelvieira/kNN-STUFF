@@ -1,17 +1,17 @@
 # KNNStuff
 K-Nearest Neighbors STreaming Unit for FPGA (KNNStuff) is a scalable RTL implementation of the KNN classifier. Since the design is highly reconfigurable, KNNStuff can be implemented in FPGAs of all sizes. This repository contains all the necessary files to rebuilt a project with KNNStuff. For testing purposes, please refer to the [KNNSim repository](https://github.com/joaomiguelvieira/KNNSim), which includes a tuned version of the KNN classifier suited to achieve maximum performance in general purpose processors.
 
-1. [Content of this repository](#content-of-this-repository)
-2. [Pre-requisites](#pre-requisites)
-3. [Create a new project](#create-a-new-project)
-4. [Package the IPs](#package-the-ips)
-5. [Build the block diagram](#build-the-block-diagram)
-6. [Create an application project](#create-an-application-project)
-7. [Run KNNStuff](#run-knnstuff)
-8. [Customizing KNNStuff parameters](#customizing-knnstuff-parameters)
-  1. [Classifier parameters]
-  2. [Software and dataset parameters]
-  3. [Add/remove accelerators and clusters of accelerators]
+- [Content of this repository](#content-of-this-repository)
+- [Pre-requisites](#pre-requisites)
+- [Create a new project](#create-a-new-project)
+- [Package the IPs](#package-the-ips)
+- [Build the block diagram](#build-the-block-diagram)
+- [Create an application project](#create-an-application-project)
+- [Run KNNStuff](#run-knnstuff)
+- [Customizing KNNStuff parameters](#customizing-knnstuff-parameters)
+  - [Classifier parameters]
+  - [Software and dataset parameters]
+  - [Add/remove accelerators and clusters of accelerators]
 
 ## Content of this repository
 * `/rtl`: contains the VHDL files and the Xilinx IP files to generate the custom IP cores;
