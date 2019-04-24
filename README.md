@@ -145,7 +145,7 @@ At this point, connect the *UART/PROG* connector of Zybo board to your computer 
 
 From *Xilinx* select *Program FPGA* and hit *Program*. You will see a progress bar showing that the device is being programmed.
 
-On [line 199 of `src/KNN.c`](src/KNN.c#L199), right after entering the `main`, add `return 0`. Then, right-click on *KNN*, in the *Project Explorer* menu, *Run As* and *Launch On Hardware (System Debugger)*. After this, remove the line that you just added to the code, restoring the main to its original code.
+On [line 199 of `src/KNN.c`](src/KNN.c#L199), right after entering the `main`, add `return 0`. Then, right-click on *KNN*, in the *Project Explorer* menu, *Run As* and *Launch On Hardware (System Debugger)*. **Do not worry if the output console does not show anything. At this point that is normal.** Then, remove the line that you just added to the code, restoring the `main` routine to its original code.
 
 Under *Run*, *Run Configurations*, there should be now a profile called *System Debugger using Debug_KNN.elf on Local*. Select that profile and navigate to *Application*, *Advanced Options: Edit* and add a data file to be downloaded to the board before running the software. That file can be downloaded from another GitHub repository called [KNNSim](https://github.com/joaomiguelvieira/KNNSim/blob/master/datasets/bin/0_iris.bin). Set the address of that file to be `0x100000`. Hit *Apply*, and then hit *Run*.
 
