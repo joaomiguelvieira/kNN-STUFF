@@ -182,7 +182,7 @@ Congratulations! You just got started with KNNStuff.
 The KNNStuff can be reconfigured at hardware level, software level, or both to comply with the requirements of a given classifier.
 
 ### Classifier parameters
-To change the number of K Nearest Neighbors (K), the maximum number of features allowed per sample and the number of accelerators per cluster, the files `rtl/knnaccelerator/knnCluster_Pkg` and `rtl/knncluster/knnCluster_Pkg` need to be modified.
+To change the number of K-Nearest Neighbors (K), the maximum number of features allowed per sample and the number of accelerators per cluster, the files `rtl/knnaccelerator/knnCluster_Pkg` and `rtl/knncluster/knnCluster_Pkg` need to be modified.
 
   - To change K, adjust the constant `KNN`;
   - To change the maximum number of features allowed per sample, adjust the constant `TEST_DEPTH` to be equal to ceil(log2(M)), where M is the maximum number of features allowed per sample;
