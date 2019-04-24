@@ -12,6 +12,7 @@ K-Nearest Neighbors STreaming Unit for FPGA (KNNStuff) is a scalable RTL impleme
   - [Classifier parameters](#classifier-parameters)
   - [Software and dataset parameters](#software-and-dataset-parameters)
   - [Add/remove accelerators and clusters of accelerators](#addremove-accelerators-and-clusters-of-accelerators)
+  - [Software run modes](#software-run-modes)
 
 ## Content of this repository
 * `/rtl`: contains the VHDL files and the Xilinx IP files to generate the custom IP cores;
@@ -196,7 +197,7 @@ Also, before running your project, if you changed K or the number of accelerator
 To add or remove a new accelerator or cluster of accelerators to the design, you can enable additional High Performance (HP) ports in the `processing_system_7_0` block, instantiate a new Direct Access Memory (DMA) block, and connect it to the design similarly to the one in the example. However, for everything to work correctly, there are some constraints you need to consider:
 
   - You cannot implement both accelerators and clusters of accelerators, and all clusters of accelerators must have the same number of cores;
-  - An accelerator or a cluster of accelerators should map directly to a DMA engine. Thus, the `sp_axis` port of accelerator/cluster i should connect to the port `M_AXIS_MM2S` of DMA i and port `m_axis` of accelerator/cluster i should connect to the port `S_AXIS_S2MM` of DMA i. The `sb_axis` ports of all accelerators/clusters should be connected to an AXI4 Broadcaster, that broadcasts the `S_AXIS_MM2S` port of DMA 0. **Thus the `sp_axis` port of accelerator/cluster 0 should also connect to the broadcaster**.
+  - An accelerator or a cluster of accelerators should map directly to a DMA engine. Thus the `sp_axis` port of accelerator/cluster i should connect to the port `M_AXIS_MM2S` of DMA i and port `m_axis` of accelerator/cluster i should connect to the port `S_AXIS_S2MM` of DMA i. The `sb_axis` ports of all accelerators/clusters should be connected to an AXI4 Broadcaster, that broadcasts the `S_AXIS_MM2S` port of DMA 0. **Thus the `sp_axis` port of accelerator/cluster 0 should also connect to the broadcaster**.
   
 After modifying the block diagram, navigate to the *Tcl Console* and run the following commands.
 ```
