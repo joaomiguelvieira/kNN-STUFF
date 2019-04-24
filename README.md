@@ -1,5 +1,5 @@
 # KNNStuff
-K-Nearest Neighbors STreaming Unit for FPGA (KNNStuff) is a scalable RTL implementation of the KNN classifier. Since the design is highly reconfigurable, KNNStuff can be implemented in FPGAs of all sizes.
+K-Nearest Neighbors STreaming Unit for FPGA (KNNStuff) is a scalable RTL implementation of the KNN classifier. Since the design is highly reconfigurable, KNNStuff can be implemented in FPGAs of all sizes. This repository contains all the necessary files to rebuilt a project with KNNStuff. For testing purposes, please reffer to the [KNNSim repository](https://github.com/joaomiguelvieira/KNNSim), which contains a tunned version of the KNN classifier suited to achieve maximum performance in general purpose processors.
 
 1. [Content of this repository](#content-of-this-repository)
 2. [Pre-requisites](#pre-requisites)
