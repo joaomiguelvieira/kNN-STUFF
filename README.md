@@ -140,6 +140,6 @@ After exporting the design **twice**, hit *File* and *Lauch SDK*.
 ## Run KNNStuff
 After launching Vivado SDK, hit *File*, *New* and *Application Project*. Name the project "KNN" and hit *Next*. Choose *Empty Application* and hit *Finish*. Expand the newly created project *KNN* in the *Project Explorer* menu, righ-click on *src* and hit *Import*. Pick *General*, *File System* and *Next*. Navigate to the directory where you clonned this github repo, setect `src` and hit *Ok*. Select all the files contained in that folder and hit *Finish*.
 
-On [line 199 of `src/KNN.c`](src/KNN.c#199), right after entering the `main`, add `return 0`.
+On [line 199 of `src/KNN.c`](src/KNN.c#L199), right after entering the `main`, add `return 0`.
 
 ## Customizing KNNStuff parameters
