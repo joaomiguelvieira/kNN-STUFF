@@ -80,7 +80,7 @@ In the *Sources* menu, find the *Libraries* tab. Select the file *knnCluster_Pkg
 From the flow navigator menu, select *Package IP*. Go through the several tabs that have the review icon (a small sheet of paper with a pencil) and merge all the changes (click on the suggestions presented in the yellow bar). Finally, select *Review and Package* and *Re-Package IP*. **Note that if you want to keep the project after packaging the IP, you need to select first *Edit packaging settings* and deselect the option *Delete project after packaging***.
 
 ## Build the block diagram
-After packaging both IPs, you can close all Vivado projects but the first one you created. In the *Flow Navigator* menu, under *PROJECT MANAGER*, hit *Settings* and navigate to *IP* and then *Repository*. Add the directory that contains the IPs to the list of repositories, and make sure that both IPs are located.
+After packaging both IPs, you can close all Vivado projects but the first one you created. In the *Flow Navigator* menu, under *PROJECT MANAGER*, hit *Settings* and navigate to *IP* and then *Repository*. Add the directory that contains the IPs to the list of repositories, and make sure that both IPs are detected.
 
 ![new_project7](img/new_project7.png "New Project 7")
 
