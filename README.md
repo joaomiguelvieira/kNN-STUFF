@@ -149,7 +149,7 @@ On [line 199 of `src/KNN.c`](src/KNN.c#L199), right after entering the `main`, a
 
 Under *Run*, *Run Configurations*, there should be now a profile called *System Debugger using Debug_KNN.elf on Local*. Select that profile and navigate to *Application*, *Advanced Options: Edit* and add a data file to be downloaded to the board before running the software. That file can be downloaded from another GitHub repository called [KNNSim](https://github.com/joaomiguelvieira/KNNSim/blob/master/datasets/bin/0_iris.bin). Set the address of that file to be `0x100000`. Hit *Apply*, and then hit *Run*.
 
-You will see an output similar to the following.
+If everything went well, you should see an output similar to the following in the output console.
 
 ```
 ============== SUMMARY ==============
