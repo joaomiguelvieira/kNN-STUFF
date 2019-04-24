@@ -12,7 +12,7 @@ K-Nearest Neighbors STreaming Unit for FPGA (KNNStuff) is a scalable RTL impleme
 
 ## Content of this repository
 * `/rtl`: contains the VHDL files and the Xilinx IP files to generate the custom IP cores;
-* `/scripts`: contains auxiliary scripts to help building the project;
+* `/scripts`: contains auxiliary scripts to help to build the project;
 * `/src`: contains the source code of the KNN classifier.
 
 ## Pre-requisites
@@ -26,7 +26,7 @@ To use KNNStuff, the minimum requisits are demanded:
 * A micro USB cable to connect the board to the host computer.
 
 ## Create a new project
-First, you need to create a new project that will contain the synthetizable block design to program the SoC. To do that, open Vivado 2018.3 and create a new project by selecting *Create Project* from the *Quick Start* menu.
+First, you need to create a new project that will contain the synthesizable block design to program the SoC. To do that, open Vivado 2018.3 and create a new project by selecting *Create Project* from the *Quick Start* menu.
 
 ![new_project1](img/new_project1.png "New Project 1")
 
@@ -51,11 +51,11 @@ From the menu *Boards*, select *Zybo*.
 Finally, press *Next* and *Finish* to open the newly created project.
 
 ## Package the IPs
-After creating a new project, the custom IPs need to be packaged and build from the VHDL sources. To do that, select *Tools* and then *Create and Package New IP...*. Press *Next* and select *Create a new AXI4 peripheral*. Name the first IP "knnAccelerator" and press *Next*. Then, it will be necessary to create three AXI4 Stream interfaces (two slaves and one master). In the end, the list of interfaces should look the following:
+After creating a new project, the custom IPs need to be packaged and build from the VHDL sources. To do that, select *Tools* and then *Create and Package New IP...*. Press *Next* and select *Create a new AXI4 peripheral*. Name the first IP "knnAccelerator" and press *Next*. Then, it will be necessary to create three AXI4 Stream interfaces (two slaves and one master). In the end, the list of interfaces should look like the following:
 
 ![new_project6](img/new_project6.png "New Project 6")
 
-**Note that you should create the interfaces with exactly these names and parameters. The master inteerface should have *Master* as *Interface Mode* instead of *Slave*.**
+**Note that you should create the interfaces with precisely these names and parameters. The master interface should have *Master* as *Interface Mode* instead of *Slave*.**
 
 Select *Next*, *Edit IP*, and *Finish*.
 
@@ -63,15 +63,15 @@ To add the sources of the first IP, right-click on *Design Sources* and select *
 
 In the *Sources* menu, find the *Libraries* tab. Select the file *knnCluster_Pkg.vhd*, under *Design Sources*, *VHDL*, *xil_defaultlib*. Right-click and select *Set Library*. Write *knnCluster* and select *Ok*.
 
-From the flow navigator menu, select *Package IP*. Go through the several tabs that have review icon (small sheet of paper with a pencil) and merge all the changes (click in the suggestions presented in the yellow bar). Finally, select *Review and Package* and *Re-Package IP*. **Note that if you want to keep the project after packaging the IP, you need to select first *Edit packaging settings* deselect the option *Delete project after packaging***.
+From the flow navigator menu, select *Package IP*. Go through the several tabs that have review icon (a small sheet of paper with a pencil) and merge all the changes (click on the suggestions presented in the yellow bar). Finally, select *Review and Package* and *Re-Package IP*. **Note that if you want to keep the project after packaging the IP, you need to select first *Edit packaging settings* deselect the option *Delete project after packaging***.
 
-Next, you need to repeat the same procedure to the second IP.
+Next, you need to repeat the same procedure to the other IP.
 
-Reopen the project that you created in section [Create a new project](#create-a-new-project), select *Tools* and then *Create and Package New IP...*. Press *Next* and select *Create a new AXI4 peripheral*. Name the second IP "knnCluster" and press *Next*. Then, it will be necessary to create three AXI4 Stream interfaces (two slaves and one master). In the end, the list of interfaces should look the following:
+Reopen the project that you created in section [Create a new project](#create-a-new-project), select *Tools* and then *Create and Package New IP...*. Press *Next* and select *Create a new AXI4 peripheral*. Name the other IP "knnCluster" and press *Next*. Then, it will be necessary to create three AXI4 Stream interfaces (two slaves and one master). In the end, the list of interfaces should look like the following:
 
 ![new_project6](img/new_project6.png "New Project 6")
 
-**Note that you should create the interfaces with exactly these names and parameters. The master inteerface should have *Master* as *Interface Mode* instead of *Slave*.**
+**Note that you should create the interfaces with precisely these names and parameters. The master interface should have *Master* as *Interface Mode* instead of *Slave*.**
 
 Select *Next*, *Edit IP*, and *Finish*.
 
@@ -79,7 +79,7 @@ To add the sources of the first IP, right-click on *Design Sources* and select *
 
 In the *Sources* menu, find the *Libraries* tab. Select the file *knnCluster_Pkg.vhd*, under *Design Sources*, *VHDL*, *xil_defaultlib*. Right-click and select *Set Library*. Write *knnCluster* and select *Ok*.
 
-From the flow navigator menu, select *Package IP*. Go through the several tabs that have review icon (small sheet of paper with a pencil) and merge all the changes (click in the suggestions presented in the yellow bar). Finally, select *Review and Package* and *Re-Package IP*. **Note that if you want to keep the project after packaging the IP, you need to select first *Edit packaging settings* deselect the option *Delete project after packaging***.
+From the flow navigator menu, select *Package IP*. Go through the several tabs that have review icon (a small sheet of paper with a pencil) and merge all the changes (click on the suggestions presented in the yellow bar). Finally, select *Review and Package* and *Re-Package IP*. **Note that if you want to keep the project after packaging the IP, you need to select first *Edit packaging settings* deselect the option *Delete project after packaging***.
 
 ## Build the block diagram
 After packaging both IPs, you can close all Vivado projects but the first one you created. In the *Flow Navigator* menu, under *PROJECT MANAGER*, hit *Settings* and navigate to *IP* and then *Repository*. Add the directory that contains the IPs to the list of repositories, and make sure that both IPs are located.
@@ -87,7 +87,7 @@ After packaging both IPs, you can close all Vivado projects but the first one yo
 ![new_project7](img/new_project7.png "New Project 7")
 
 Under *IP INTEGRATOR*, hit *Create Block Design*. You can name it whatever you want. Then, run the script 
-![generate_bd](scripts/generate_bd.tcl "Generate Block Design") to generate the block diagram of the system. You can do so by either selecting *Tools* and *Run Tcl Script* or by simply copying and pasting the content of the script in the *Tcl Console*. If you completed all the previous steps correctly, there should no erros. The output should look like the following.
+![generate_bd](scripts/generate_bd.tcl "Generate Block Design") to generate the block diagram of the system. You can do so by either selecting *Tools* and *Run Tcl Script* or by simply copying and pasting the content of the script in the *Tcl Console*. If you completed all the previous steps correctly, there should no errors and the output should look like the following.
 
 ```
 # create_bd_cell -type ip -vlnv xilinx.com:ip:processing_system7:5.5 processing_system7_0
@@ -128,6 +128,18 @@ CRITICAL WARNING: [PSU-4]  Parameter : PCW_UIPARAM_DDR_DQS_TO_CLK_DELAY_3 has ne
 Wrote  : </home/joaovieira/tmp/project_1/project_1.srcs/sources_1/bd/design_1/design_1.bd>
 ```
 
+From the menu *Sources*, right-click on your design and select *Create HDL Wrapper...*. Then select *Let Vivado manage wrapper and auto-update* and hit *Ok*.
+
+Finally, in the *Flow Navigator* menu, under *PROGRAM AND DEBUG*, hit *Generate Bitstream*. You will be prompted to launch Synthesis and Implementation first. Accept the suggestion, select the number of jobs to run (choose the highest number from the dropdown list), and press *Ok* to generate the bitstream. When Vivado finishes generating the bitstream, you can just close the dialog window.
+
 ## Create an application project
+Before creating an SDK project, from the Vivado menu hit *File*, *Export* and *Export Hardware...*. Make sure that you include the bitstream and hit *Ok*. Vivado has a known bug in exporting designs, thus **you need to export it twice**.
+
+After exporting the design **twice**, hit *File* and *Lauch SDK*.
+
 ## Run KNNStuff
+After launching Vivado SDK, hit *File*, *New* and *Application Project*. Name the project "KNN" and hit *Next*. Choose *Empty Application* and hit *Finish*. Expand the newly created project *KNN* in the *Project Explorer* menu, righ-click on *src* and hit *Import*. Pick *General*, *File System* and *Next*. Navigate to the directory where you clonned this github repo, setect `src` and hit *Ok*. Select all the files contained in that folder and hit *Finish*.
+
+On [line 199 of `src/KNN.c`](src/KNN.c#199), right after entering the `main`, add `return 0`.
+
 ## Customizing KNNStuff parameters
