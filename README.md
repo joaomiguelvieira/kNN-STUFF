@@ -141,7 +141,7 @@ In the Vivado SDK window, hit *File*, *New* and *Application Project*. Name the 
 
 After creating your project and importing the sources, right-click on *KNN* under the *Project Explorer* menu and select *Generate Linker Script*. Change the place to put the *Code Sections*, the *Data Sections* and the *Heap and Stack* to `ps7_ram_0`. Set the *Heap Size* and the *Stack Size* to be equal to 10 KB. Press *Generate* to generate the new linker script.
 
-At this point, connect the *UART/PROG* connector of Zybo board to your computer using a micro USB cable and turn on the board. In a terminal, use the command `dmesg` to determine where the device was mapped. In my case, it was mapped to `/dev/ttyUSB1`. Use an application like `screen` or minicom to open a connection with the board to see the output. If you are using `minicom`, that can be achieved with the command `sudo minicom -D /dev/ttyUSB1`. **Do not forget to replace `/dev/ttyUSB1` by the actual board's identifier.**
+At this point, connect the *UART/PROG* connector of Zybo board to your computer using a micro USB cable and turn on the board. In a terminal, use the command `dmesg` to determine where the device was mapped. In my case, it was mapped to `/dev/ttyUSB1`. Use an application like `screen` or `minicom` to open a connection with the board to see the output. If you are using `minicom`, that can be achieved with the command `sudo minicom -D /dev/ttyUSB1`. **Do not forget to replace `/dev/ttyUSB1` by the actual board's identifier.**
 
 From *Xilinx* select *Program FPGA* and hit *Program*. You will see a progress bar showing that the device is being programmed.
 
