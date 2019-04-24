@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <math.h>
 #include <string.h>
 #include "xil_printf.h"
 #include "xil_cache.h"
@@ -93,11 +92,13 @@ void classify(System system) {
  * @return float: euclidean distance between the two points
  * */
 float euclideanDistanceSW(int testSample, int controlSample) {
-	float distance = 0;
+	float aux, distance = 0;
 
 	/* calculate the euclidean distance except the square root (not necessary) */
-	for(int k = 0; k < N_COORDINATES; k++)
-		distance += powf(TS(testSample, k) - CS(controlSample, k), 2);
+	for(int k = 0; k < N_COORDINATES; k++) {
+		aux = TS(testSample, k) - CS(controlSample, k);
+		distance += aux * aux;
+	}
 
 	return distance;
 }

@@ -4,8 +4,8 @@
 /* ===================================================
  * ========== CHANGE NUMBER OF ACCELERATORS ==========
  * =================================================== */
-#define NUMBER_OF_DMA 2
-#define CORES_PER_DMA 1
+#define NUMBER_OF_DMA 1
+#define CORES_PER_DMA 4
 #define NUMBER_ACCELERATORS NUMBER_OF_DMA * CORES_PER_DMA
 /* =================================================== */
 
