@@ -11,7 +11,7 @@ K-Nearest Neighbors STreaming Unit for FPGA (KNNStuff) is a scalable RTL impleme
 - [Customizing KNNStuff parameters](#customizing-knnstuff-parameters)
   - [Classifier parameters](#classifier-parameters)
   - [Software and dataset parameters](#software-and-dataset-parameters)
-  - [Add/remove accelerators and clusters of accelerators](#add-remove-accelerators-and-clusters-of-accelerators)
+  - [Add/remove accelerators and clusters of accelerators](#addremove-accelerators-and-clusters-of-accelerators)
 
 ## Content of this repository
 * `/rtl`: contains the VHDL files and the Xilinx IP files to generate the custom IP cores;
@@ -179,6 +179,49 @@ N Control Samples | 100
 Congratulations! You just got started with KNNStuff.
 
 ## Customizing KNNStuff parameters
+The KNNStuff can be reconfigured at hardware level, software level, or both to comply with the requirements of a given classifier.
+
 ### Classifier parameters
-### Software and dataset parameters
+To change the number of K Nearest Neighbors (K), the maximum number of features allowed per sample and the number of accelerators per cluster, the files `rtl/knnaccelerator/knnCluster_Pkg` and `rtl/knncluster/knnCluster_Pkg` need to be modified.
+
+  - To change K, adjust the constant `KNN`;
+  - To change the maximum number of features allowed per sample, adjust the constant `TEST_DEPTH` to be equal to ceil(log2(M)), where M is the maximum number of features allowed per sample;
+  - To change the number of accelerators per cluster (only relevant for `rtl/knncluster/knnCluster_Pkg`), adjust the constant `N_ACCELS` to be equal to log2(A), where A is the number of accelerators. **Note that the number of accelerators must be a potency of 2.**
+  
+After performing the required modifications, you need to merge the modifications and repackage the IP. Open the project that contains the block design of KNNStuff and hit *Reports*, *Report IP Status*. Hit *Refresh IP Catalog*, *Upgrade Selected*, *Ok* and *Skip*. Navigate to the *Tcl Console* and run the command `reset_project`. Then, regenerate the bitstream, export the design to SDK **twice**, and launch SDK. You might also have to close SDK after opening it for the first time and relaunch it. Otherwise, it might wrongly tell you that some libraries are missing.
+
+Also, before running your project, if you changed K or the number of accelerators per cluster, you also have to modify [line 14 of `src/KNN.c`](src/KNN.c#L14) and [line 8 of `src/DMAInterface.h`](src/DMAInterface.h#L8), respectively.
+
 ### Add/remove accelerators and clusters of accelerators
+To add or remove a new accelerator or cluster of accelerators to the design, you can enable additional High Performance (HP) ports in the `processing_system_7_0` block, instantiate a new Direct Access Memory (DMA) block, and connect it to the design similar to the one in the example. However, for everything to work correctly, there are some constraints you need to consider:
+
+  - You cannot implement both accelerators and clusters of accelerators, and all clusters of accelerators must have the same number of cores;
+  - An accelerator or a cluster of accelerators should map directly to a DMA engine. Thus, the `sp_axis` port of accelerator/cluster i should connect to the port `M_AXIS_MM2S` of DMA i and port `m_axis` of accelerator/cluster i should connect to the port `S_AXIS_S2MM` of DMA i. The `sb_axis` ports of all accelerators/clusters should be connected to an AXI4 Broadcaster, that broadcasts the `S_AXIS_MM2S` port of DMA 0. **Thus the `sp_axis` port of accelerator/cluster 0 should also connect to the broadcaster**.
+  
+After modifying the block diagram, navigate to the *Tcl Console* and run the following commands.
+```
+regenerate_bd_layout
+validate_bd_design
+save_bd_design
+reset_project
+```
+
+If you modified the design correctly, no errors should pop up.
+
+Go ahead and regenerate the bitstream, export the design to SDK and launch SDK. Before running the application, be sure to modify [lines 7 and 8 of `src/DMAInterface.h`](src/DMAInterface.h#L7) to comply with the modifications.
+
+### Software and dataset parameters
+The dataset that ships with this example is the [Iris dataset](http://archive.ics.uci.edu/ml/datasets/iris), which is rather small and has no practical use. However, in [this repository](https://github.com/joaomiguelvieira/KNNSim/tree/master/datasets) you can find larger datasets that may be used to evaluate the performance of the system. To use them, replace the file pointed in the run configuration under *Application* and *Advanced Options: Edit* by the one you want to simulate. **Keep the same address `0x100000` for the file.**
+
+If you change the dataset file, find the `.cfg` file with the same name (or similar) to the `.bin` file, and change the [lines from 15 to 18 of `src/KNN.c`](src/KNN.c#L15) accordingly to its content.
+
+### Software run modes
+The KNN classifier provides four modes: debug, only software, only hardware, both software and hardware.
+
+To run in debug mode, the `DEBUG` flag must be set. In this mode, both the hardware and the software versions of the KNN classifier are run, and the results of the classification are dumped to the output terminal. This mode has the single objective of verifying the correct function of the system and does not provide information on timing.
+
+To run in only software mode, the `RUN_SW` flag must be set, and all the other flags must be unset. Using this mode provides timing results for the software version of the classifier running exclusively on the Processing System (PS) of the Zynq device.
+
+To run in only hardware mode, the `RUN_HW` flag must be set, and all the other flags must be unset. Using this mode provides timing results for the version of the classifier accelerated by KNNStuff.
+
+To run in both software and hardware mode, the flags `RUN_SW` and `RUN_HW` must be set, and the `DEBUG` flag must be unset. Using this mode provides timing results for both the software version of the classifier running exclusively on the PS of the Zynq device and the version of the classifier accelerated by KNNStuff. Also, the performance improvement of the classifier using the KNNStuff over the version using only the PS of the Zynq device is calculated.
