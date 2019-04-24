@@ -1,5 +1,5 @@
 # KNNStuff
-K-Nearest Neighbors STreaming Unit for FPGA (KNNStuff) is a scalable RTL implementation of the KNN classifier. Since the design is highly reconfigurable, KNNStuff can be implemented in FPGAs of all sizes. This repository contains all the necessary files to rebuilt a project with KNNStuff. For testing purposes, please reffer to the [KNNSim repository](https://github.com/joaomiguelvieira/KNNSim), which contains a tunned version of the KNN classifier suited to achieve maximum performance in general purpose processors.
+K-Nearest Neighbors STreaming Unit for FPGA (KNNStuff) is a scalable RTL implementation of the KNN classifier. Since the design is highly reconfigurable, KNNStuff can be implemented in FPGAs of all sizes. This repository contains all the necessary files to rebuilt a project with KNNStuff. For testing purposes, please refer to the [KNNSim repository](https://github.com/joaomiguelvieira/KNNSim), which includes a tuned version of the KNN classifier suited to achieve maximum performance in general purpose processors.
 
 1. [Content of this repository](#content-of-this-repository)
 2. [Pre-requisites](#pre-requisites)
@@ -87,7 +87,7 @@ After packaging both IPs, you can close all Vivado projects but the first one yo
 ![new_project7](img/new_project7.png "New Project 7")
 
 Under *IP INTEGRATOR*, hit *Create Block Design*. You can name it whatever you want. Then, run the script 
-![generate_bd](scripts/generate_bd.tcl "Generate Block Design") to generate the block diagram of the system. You can do so by either selecting *Tools* and *Run Tcl Script* or by simply copying and pasting the content of the script in the *Tcl Console*. If you completed all the previous steps correctly, there should no errors and the output should look like the following.
+![generate_bd](scripts/generate_bd.tcl "Generate Block Design") to generate the block diagram of the system. You can do so by either selecting *Tools* and *Run Tcl Script* or by simply copying and pasting the content of the script in the *Tcl Console*. If you completed all the previous steps correctly, there should no errors, and the output should look like the following.
 
 ```
 # create_bd_cell -type ip -vlnv xilinx.com:ip:processing_system7:5.5 processing_system7_0
@@ -130,25 +130,25 @@ Wrote  : </home/joaovieira/tmp/project_1/project_1.srcs/sources_1/bd/design_1/de
 
 From the menu *Sources*, right-click on your design and select *Create HDL Wrapper...*. Then select *Let Vivado manage wrapper and auto-update* and hit *Ok*.
 
-Finally, in the *Flow Navigator* menu, under *PROGRAM AND DEBUG*, hit *Generate Bitstream*. You will be prompted to launch Synthesis and Implementation first. Accept the suggestion, select the number of jobs to run (choose the highest number from the dropdown list), and press *Ok* to generate the bitstream. When Vivado finishes generating the bitstream, you can just close the dialog window.
+Finally, in the *Flow Navigator* menu, under *PROGRAM AND DEBUG*, hit *Generate Bitstream*. You will be prompted to launch Synthesis and Implementation first. Accept the suggestion, select the number of jobs to run (choose the highest number from the dropdown list), and press *Ok* to generate the bitstream. When Vivado finishes generating the bitstream, you can close the dialog window.
 
 ## Create an application project
-Before creating an SDK project, from the Vivado menu hit *File*, *Export* and *Export Hardware...*. Make sure that you include the bitstream and hit *Ok*. Vivado has a known bug in exporting designs, thus **you need to export it twice**.
+Before creating an SDK project, from the Vivado menu hit *File*, *Export* and *Export Hardware...*. Make sure that you include the bitstream and hit *Ok*. Vivado has a known bug in exporting designs. Thus **you need to export it twice**.
 
-After exporting the design **twice**, hit *File* and *Lauch SDK*.
+After exporting the design **twice**, hit *File* and *Launch SDK*.
 
 ## Run KNNStuff
-After launching Vivado SDK, hit *File*, *New* and *Application Project*. Name the project "KNN" and hit *Next*. Choose *Empty Application* and hit *Finish*. Expand the newly created project *KNN* in the *Project Explorer* menu, righ-click on *src* and hit *Import*. Pick *General*, *File System* and *Next*. Navigate to the directory where you clonned this github repo, setect `src` and hit *Ok*. Select all the files contained in that folder and hit *Finish*.
+After launching Vivado SDK, hit *File*, *New* and *Application Project*. Name the project "KNN" and hit *Next*. Choose *Empty Application* and hit *Finish*. Expand the newly created project *KNN* in the *Project Explorer* menu, right-click on *src* and hit *Import*. Pick *General*, *File System* and *Next*. Navigate to the directory where you cloned this GitHub repo, select `src` and hit *Ok*. Select all the files contained in that folder and hit *Finish*.
 
 Right-click on *KNN* under the *Project Explorer* menu and select *Generate Linker Script*. Change the place to put the *Code Sections*, the *Data Sections* and the *Heap and Stack* to `ps7_ram_0`. Set the *Heap Size* and the *Stack Size* to be equal to 10 KB. Press *Generate* to generate the new linker script.
 
-At this point, connect the *UART/PROG* connector of Zybo board to your computer using a micro USB cable and turn the board on. In a terminal, use the command `dmesg` to determine where the device was mapped. In my case, it was mapped to `/dev/ttyUSB1`. Use an application like `screen` or minicom to open a connection with the board to see the output. If you are using `minicom`, that can be achieved with the command `sudo minicom -D /dev/ttyUSB1`. **Do not forget to replace `/dev/ttyUSB1` by the actual board's identifier.**
+At this point, connect the *UART/PROG* connector of Zybo board to your computer using a micro USB cable and turn on the board. In a terminal, use the command `dmesg` to determine where the device was mapped. In my case, it was mapped to `/dev/ttyUSB1`. Use an application like `screen` or minicom to open a connection with the board to see the output. If you are using `minicom`, that can be achieved with the command `sudo minicom -D /dev/ttyUSB1`. **Do not forget to replace `/dev/ttyUSB1` by the actual board's identifier.**
 
-From *Xilinx* select *Program FPGA* and hit *Program*. You will see a progress bar showing that the devive is being programmed.
+From *Xilinx* select *Program FPGA* and hit *Program*. You will see a progress bar showing that the device is being programmed.
 
-On [line 199 of `src/KNN.c`](src/KNN.c#L199), right after entering the `main`, add `return 0`. Then, right-click on *KNN*, in the *Project Explorer* menu, *Run As* and *Launch On Hardware (System Debuger)*. After this, remove the line that you just added to the code, restoring the main to its original code.
+On [line 199 of `src/KNN.c`](src/KNN.c#L199), right after entering the `main`, add `return 0`. Then, right-click on *KNN*, in the *Project Explorer* menu, *Run As* and *Launch On Hardware (System Debugger)*. After this, remove the line that you just added to the code, restoring the main to its original code.
 
-Under *Run*, *Run Configurations*, there should be know a profile called *System Debugger using Debug_KNN.elf on Local*. Select that profile and navigate to *Application*, *Advanced Options: Edit* and add a data file to be downloaded to the board before running the software. That file can be downloaded from another github repository called [KNNSim](https://github.com/joaomiguelvieira/KNNSim/blob/master/datasets/bin/0_iris.bin). Set the address of that file to be `0x100000`. Hit *Apply*, and then hit *Run*.
+Under *Run*, *Run Configurations*, there should be now a profile called *System Debugger using Debug_KNN.elf on Local*. Select that profile and navigate to *Application*, *Advanced Options: Edit* and add a data file to be downloaded to the board before running the software. That file can be downloaded from another GitHub repository called [KNNSim](https://github.com/joaomiguelvieira/KNNSim/blob/master/datasets/bin/0_iris.bin). Set the address of that file to be `0x100000`. Hit *Apply*, and then hit *Run*.
 
 You will see an output similar to the following.
 
