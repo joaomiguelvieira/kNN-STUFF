@@ -212,7 +212,7 @@ If you modified the design correctly, no errors should pop up.
 Go ahead and regenerate the bitstream, export the design to SDK and launch SDK. Before running the application, be sure to modify [lines 7 and 8 of `src/DMAInterface.h`](src/DMAInterface.h#L7) to comply with the modifications.
 
 ### Software and dataset parameters
-The dataset that ships with this example is the [Iris dataset](http://archive.ics.uci.edu/ml/datasets/iris), which is rather small and has no practical use. However, in [this repository](https://github.com/joaomiguelvieira/KNNSim/tree/master/datasets) you can find larger datasets that may be used to evaluate the performance of the system. To use them, replace the file pointed in the run configuration under *Application* and *Advanced Options: Edit* by the one you want to simulate. **Keep the same address `0x100000` for the file.**
+The dataset that goes with the example in this tutorial is the [Iris dataset](http://archive.ics.uci.edu/ml/datasets/iris), which is rather small and has no practical use. However, in [this repository](https://github.com/joaomiguelvieira/KNNSim/tree/master/datasets) you can find larger datasets that may be used to evaluate the performance of the system. To use them, replace the file pointed in the run configuration under *Application* and *Advanced Options: Edit* by the one you want to simulate. **Keep the same address `0x100000` for the file.**
 
 If you change the dataset file, find the `.cfg` file with the same name (or similar) to the `.bin` file, and change the [lines from 15 to 18 of `src/KNN.c`](src/KNN.c#L15) accordingly to its content.
 
