@@ -42,9 +42,7 @@ Make sure that the *Target language* is VLDH.
 
 ![new_project4](img/new_project4.png "New Project 4")
 
-Press *Next* twice without adding any constraints.
-
-From the menu *Boards*, select *Zybo*.
+Press *Next* twice without adding any constraints. From the menu *Boards*, select *Zybo*.
 
 ![new_project5](img/new_project5.png "New Project 5")
 
