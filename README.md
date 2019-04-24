@@ -9,9 +9,9 @@ K-Nearest Neighbors STreaming Unit for FPGA (KNNStuff) is a scalable RTL impleme
 - [Create an application project](#create-an-application-project)
 - [Run KNNStuff](#run-knnstuff)
 - [Customizing KNNStuff parameters](#customizing-knnstuff-parameters)
-  - [Classifier parameters]
-  - [Software and dataset parameters]
-  - [Add/remove accelerators and clusters of accelerators]
+  - [Classifier parameters](classifier-parameters)
+  - [Software and dataset parameters](software-and-dataset-parameters)
+  - [Add/remove accelerators and clusters of accelerators](add-remove-accelerators-and-clusters-of-accelerators)
 
 ## Content of this repository
 * `/rtl`: contains the VHDL files and the Xilinx IP files to generate the custom IP cores;
@@ -179,3 +179,6 @@ N Control Samples | 100
 Congratulations! You just got started with KNNStuff.
 
 ## Customizing KNNStuff parameters
+### Classifier parameters
+### Software and dataset parameters
+### Add/remove accelerators and clusters of accelerators
