@@ -7,7 +7,7 @@ K-Nearest Neighbors STreaming Unit for FPGA (KNNStuff) is a scalable RTL impleme
 4. [Package the IPs](#package-the-ips)
 5. [Build the block diagram](#build-the-block-diagram)
 6. [Create an application project](#create-an-application-project)
-7. [Run KNNStuff](#run-knn-stuff)
+7. [Run KNNStuff](#run-knnstuff)
 8. [Customizing KNNStuff parameters](#customizing-knnstuff-parameters)
 
 ## Content of this repository
