@@ -34,7 +34,7 @@ Select a project name and location.
 
 ![new_project2](img/new_project2.png "New Project 2")
 
-Select *RTL project*.
+Select *RTL Project*.
 
 ![new_project3](img/new_project3.png "New Project 3")
 
@@ -51,7 +51,7 @@ From the menu *Boards*, select *Zybo*.
 Finally, press *Next* and *Finish* to open the newly created project.
 
 ## Package the IPs
-After creating a new project, the custom IPs need to be packaged and build from the VHDL sources. To do that, select *Tools* and then *Create and Package New IP...*. Press *Next* and select *Create a new AXI4 peripheral*. Name the first IP "knnAccelerator" and press *Next*. Then, it will be necessary to create three AXI4 Stream interfaces (two slaves and one master). In the end, the list of interfaces should look like the following:
+After creating a new project, the custom IPs need to be packaged and build from the VHDL sources. To do that, select *Tools* and then *Create and Package New IP*. Press *Next* and select *Create a new AXI4 peripheral*. Name the first IP "knnAccelerator" and press *Next*. Then, it will be necessary to create three AXI4 Stream interfaces (two slaves and one master). In the end, the list of interfaces should look like the following:
 
 ![new_project6](img/new_project6.png "New Project 6")
 
@@ -59,7 +59,7 @@ After creating a new project, the custom IPs need to be packaged and build from 
 
 Select *Next*, *Edit IP*, and *Finish*.
 
-To add the sources of the first IP, right-click on *Design Sources* and select *Add Sources*, *Add or create design sources*, and *Add Files*. Navigate to `rtl/knnaccelerator`, select all the files and press *Finish*. Select the files named *knnAccelerator_v1_0_m_axis*, *knnAccelerator_v1_0_sb_axis*, and *knnAccelerator_v1_0_sp_axis*, right-click and *Remove file from project...*.
+To add the sources of the first IP, right-click on *Design Sources* and select *Add Sources*, *Add or create design sources*, and *Add Files*. Navigate to `rtl/knnaccelerator`, select all the files and press *Finish*. Select the files named *knnAccelerator_v1_0_m_axis*, *knnAccelerator_v1_0_sb_axis*, and *knnAccelerator_v1_0_sp_axis*, right-click and *Remove file from project*.
 
 In the *Sources* menu, find the *Libraries* tab. Select the file *knnCluster_Pkg.vhd*, under *Design Sources*, *VHDL*, *xil_defaultlib*. Right-click and select *Set Library*. Write *knnCluster* and select *Ok*.
 
@@ -67,7 +67,7 @@ From the flow navigator menu, select *Package IP*. Go through the several tabs t
 
 Next, you need to repeat the same procedure to the other IP.
 
-Reopen the project that you created in section [Create a new project](#create-a-new-project), select *Tools* and then *Create and Package New IP...*. Press *Next* and select *Create a new AXI4 peripheral*. Name the other IP "knnCluster" and press *Next*. Then, it will be necessary to create three AXI4 Stream interfaces (two slaves and one master). In the end, the list of interfaces should look like the following:
+Reopen the project that you created in section [Create a new project](#create-a-new-project), select *Tools* and then *Create and Package New IP*. Press *Next* and select *Create a new AXI4 peripheral*. Name the other IP "knnCluster" and press *Next*. Then, it will be necessary to create three AXI4 Stream interfaces (two slaves and one master). In the end, the list of interfaces should look like the following:
 
 ![new_project6](img/new_project6.png "New Project 6")
 
@@ -75,7 +75,7 @@ Reopen the project that you created in section [Create a new project](#create-a-
 
 Select *Next*, *Edit IP*, and *Finish*.
 
-To add the sources of the first IP, right-click on *Design Sources* and select *Add Sources*, *Add or create design sources*, and *Add Files*. Navigate to `rtl/knncluster`, select all the files and press *Finish*. Select the files named *knnCluster_v1_0_m_axis*, *knnCluster_v1_0_sb_axis*, and *knnCluster_v1_0_sp_axis*, right-click and *Remove file from project...*.
+To add the sources of the first IP, right-click on *Design Sources* and select *Add Sources*, *Add or create design sources*, and *Add Files*. Navigate to `rtl/knncluster`, select all the files and press *Finish*. Select the files named *knnCluster_v1_0_m_axis*, *knnCluster_v1_0_sb_axis*, and *knnCluster_v1_0_sp_axis*, right-click and *Remove file from project*.
 
 In the *Sources* menu, find the *Libraries* tab. Select the file *knnCluster_Pkg.vhd*, under *Design Sources*, *VHDL*, *xil_defaultlib*. Right-click and select *Set Library*. Write *knnCluster* and select *Ok*.
 
@@ -128,12 +128,12 @@ CRITICAL WARNING: [PSU-4]  Parameter : PCW_UIPARAM_DDR_DQS_TO_CLK_DELAY_3 has ne
 Wrote  : </home/joaovieira/tmp/project_1/project_1.srcs/sources_1/bd/design_1/design_1.bd>
 ```
 
-From the menu *Sources*, right-click on your design and select *Create HDL Wrapper...*. Then select *Let Vivado manage wrapper and auto-update* and hit *Ok*.
+From the menu *Sources*, right-click on your design and select *Create HDL Wrapper*. Then select *Let Vivado manage wrapper and auto-update* and hit *Ok*.
 
 Finally, in the *Flow Navigator* menu, under *PROGRAM AND DEBUG*, hit *Generate Bitstream*. You will be prompted to launch Synthesis and Implementation first. Accept the suggestion, select the number of jobs to run (choose the highest number from the dropdown list), and press *Ok* to generate the bitstream. When Vivado finishes generating the bitstream, you can close the dialog window.
 
 ## Create an application project
-Before creating an SDK project, from the Vivado menu hit *File*, *Export* and *Export Hardware...*. Make sure that you include the bitstream and hit *Ok*. Vivado has a known bug in exporting designs. Thus **you need to export it twice**.
+Before creating an SDK project, from the Vivado menu hit *File*, *Export* and *Export Hardware*. Make sure that you include the bitstream and hit *Ok*. Vivado has a known bug in exporting designs. Thus **you need to export it twice**.
 
 After exporting the design **twice**, hit *File* and *Launch SDK*.
 
