@@ -140,6 +140,40 @@ After exporting the design **twice**, hit *File* and *Lauch SDK*.
 ## Run KNNStuff
 After launching Vivado SDK, hit *File*, *New* and *Application Project*. Name the project "KNN" and hit *Next*. Choose *Empty Application* and hit *Finish*. Expand the newly created project *KNN* in the *Project Explorer* menu, righ-click on *src* and hit *Import*. Pick *General*, *File System* and *Next*. Navigate to the directory where you clonned this github repo, setect `src` and hit *Ok*. Select all the files contained in that folder and hit *Finish*.
 
-On [line 199 of `src/KNN.c`](src/KNN.c#L199), right after entering the `main`, add `return 0`.
+Right-click on *KNN* under the *Project Explorer* menu and select *Generate Linker Script*. Change the place to put the *Code Sections*, the *Data Sections* and the *Heap and Stack* to `ps7_ram_0`. Set the *Heap Size* and the *Stack Size* to be equal to 10 KB. Press *Generate* to generate the new linker script.
+
+At this point, connect the *UART/PROG* connector of Zybo board to your computer using a micro USB cable and turn the board on. In a terminal, use the command `dmesg` to determine where the device was mapped. In my case, it was mapped to `/dev/ttyUSB1`. Use an application like `screen` or minicom to open a connection with the board to see the output. If you are using `minicom`, that can be achieved with the command `sudo minicom -D /dev/ttyUSB1`. **Do not forget to replace `/dev/ttyUSB1` by the actual board's identifier.**
+
+From *Xilinx* select *Program FPGA* and hit *Program*. You will see a progress bar showing that the devive is being programmed.
+
+On [line 199 of `src/KNN.c`](src/KNN.c#L199), right after entering the `main`, add `return 0`. Then, right-click on *KNN*, in the *Project Explorer* menu, *Run As* and *Launch On Hardware (System Debuger)*. After this, remove the line that you just added to the code, restoring the main to its original code.
+
+Under *Run*, *Run Configurations*, there should be know a profile called *System Debugger using Debug_KNN.elf on Local*. Select that profile and navigate to *Application*, *Advanced Options: Edit* and add a data file to be downloaded to the board before running the software. That file can be downloaded from another github repository called [KNNSim](https://github.com/joaomiguelvieira/KNNSim/blob/master/datasets/bin/0_iris.bin). Set the address of that file to be `0x100000`. Hit *Apply*, and then hit *Run*.
+
+You will see an output similar to the following.
+
+```
+============== SUMMARY ==============
+        N Nearest | 5
+        N Classes | 3
+    N Coordinates | 4
+   N Test Samples | 50
+N Control Samples | 100
+-------------------------------------                                     
+   N Accelerators | 4                                                     
+            N DMA | 1                                                     
+    Cores per DMA | 4                                                     
+-------------------------------------                                     
+    Software Time | 3170.56 us
+  Software Cycles | 2060866
+-------------------------------------
+    Hardware Time | 307.17 us
+  Hardware Cycles | 199658
+-------------------------------------
+          Speedup | 10.33
+=====================================
+```
+
+Congratulations! You just got started with KNNStuff.
 
 ## Customizing KNNStuff parameters
