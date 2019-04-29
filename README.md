@@ -46,7 +46,7 @@ Make sure that the *Target language* is VLDH.
 
 ![new_project4](img/new_project4.png "New Project 4")
 
-Press *Next* twice without adding any constraints. From the menu *Boards*, select *Zybo*.
+Press *Next* twice without adding any sources or constraints. From the menu *Boards*, select *Zybo*.
 
 ![new_project5](img/new_project5.png "New Project 5")
 
@@ -77,7 +77,7 @@ Reopen the project that you created in section [Create a new project](#create-a-
 
 Select *Next*, *Edit IP*, and *Finish*.
 
-To add the sources of the first IP, right-click on *Design Sources* and select *Add Sources*, *Add or create design sources*, and *Add Files*. Navigate to `rtl/knncluster`, select all the files and press *Finish*. Select the files named *knnCluster_v1_0_m_axis*, *knnCluster_v1_0_sb_axis*, and *knnCluster_v1_0_sp_axis*, right-click and *Remove file from project*.
+To add the sources of the second IP, right-click on *Design Sources* and select *Add Sources*, *Add or create design sources*, and *Add Files*. Navigate to `rtl/knncluster`, select all the files and press *Finish*. Select the files named *knnCluster_v1_0_m_axis*, *knnCluster_v1_0_sb_axis*, and *knnCluster_v1_0_sp_axis*, right-click and *Remove file from project*.
 
 In the *Sources* menu, find the *Libraries* tab. Select the file *knnCluster_Pkg.vhd*, under *Design Sources*, *VHDL*, *xil_defaultlib*. Right-click and select *Set Library*. Write *knnCluster* and hit *Ok*.
 
