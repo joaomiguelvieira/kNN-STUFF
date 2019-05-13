@@ -12,22 +12,25 @@
  * ========== CHANGE PARAMETERS TO ADAPT TO THE SYSTEM ==========
  * ============================================================== */
 #define N_NEAREST 5
-#define N_CLASSES 3
-#define N_COORDINATES 4
-#define N_TEST_SAMPLES 50
-#define N_CONTROL_SAMPLES 100
+#define N_CLASSES 29
+#define N_COORDINATES 8
+#define N_TEST_SAMPLES 1393
+#define N_CONTROL_SAMPLES 2784
 
 //#define DEBUG
 #define RUN_SW
 #define RUN_HW
 /* ============================================================== */
 
-#define N_TOTAL_SAMPLES (N_TEST_SAMPLES + N_CONTROL_SAMPLES)
+#if PARALLEL_CFG == 1
+#define CTRL_PER_CLUSTER  N_CONTROL_SAMPLES / NUMBER_OF_DMA
+#define CTRL_LAST_CLUSTER CTRL_PER_CLUSTER + (N_CONTROL_SAMPLES % NUMBER_OF_DMA)
+#endif
 
 /* reservation of memory addresses */
 #define CONTROL_SAMPLES_START_ADDR 0x00100000
 #define TEST_SAMPLES_START_ADDR (CONTROL_SAMPLES_START_ADDR + 4 * N_COORDINATES * N_CONTROL_SAMPLES)
-#define CLASSES_START_ADDR (CONTROL_SAMPLES_START_ADDR + 4 * N_COORDINATES * N_TOTAL_SAMPLES)
+#define CLASSES_START_ADDR (TEST_SAMPLES_START_ADDR + 4 * N_COORDINATES * N_TEST_SAMPLES)
 #define DISTANCES_START_ADDR (CLASSES_START_ADDR + 4 * N_CONTROL_SAMPLES)
 #define RESULTS_HW_START_ADDR (DISTANCES_START_ADDR + 4 * N_CONTROL_SAMPLES)
 #define RESULTS_SW_START_ADDR (RESULTS_HW_START_ADDR + 4 * N_TEST_SAMPLES * N_NEAREST)
@@ -35,7 +38,7 @@
 #define CLASSIFICATION_RESULTS_SW (CLASSIFICATION_RESULTS_HW + 4 * N_TEST_SAMPLES)
 
 /* memory to be used as auxiliary if there is the need of big vectors in functions */
-#define AUXILIAR_MEMORY (CLASSIFICATION_RESULTS_SW + 4 * N_TEST_SAMPLES)
+#define AUXILIARY_MEMORY (CLASSIFICATION_RESULTS_SW + 4 * N_TEST_SAMPLES)
 
 /* pointers to memory addresses */
 volatile float *control_samples, *test_samples, *distances;
@@ -114,8 +117,13 @@ void printResults() {
 	for(int i = 0; i < N_TEST_SAMPLES; i++) {
 		xil_printf("%d | ", i + N_CONTROL_SAMPLES + 1);
 
+#if PARALLEL_CFG == 0
 		for(int j = N_NEAREST - 1; j >= 0; j--)
 			xil_printf("%2d ", RH(i, j));
+#else
+		for(int j = 0; j < N_NEAREST; j++)
+			xil_printf("%2d ", RH(i, j));
+#endif
 
 		xil_printf("-> %2d", CRH(i));
 
@@ -131,7 +139,7 @@ void printResults() {
 /** @brief given the vector of distances between a test sample and all the control samples, this
  * functions retrieves the N_NEAREST nearest control samples to the given test sample */
 void retrieveShortest(int testSample) {
-	float *aux = (float *) AUXILIAR_MEMORY;
+	int *aux = (int *) AUXILIARY_MEMORY;
 
 	/* initialize indexes */
 	for(int i = 0; i < N_CONTROL_SAMPLES; i++)
@@ -145,7 +153,7 @@ void retrieveShortest(int testSample) {
 			if(D(j) < D(idx))
 				idx = j;
 
-		int min = D(idx);
+		float min = D(idx);
 		*(distances + idx) = D(i);
 		*(distances + i) = min;
 
@@ -158,6 +166,7 @@ void retrieveShortest(int testSample) {
 	}
 }
 
+#if PARALLEL_CFG == 0
 /**
  * @brief performs the euclidean distance between four test samples and all the control samples in
  * 	      hardware using four similar dedicated units
@@ -194,6 +203,91 @@ void euclideanDistanceHW(int testSample) {
 
 	return;
 }
+#else
+/**
+ * @brief merges the results obtained by the different accelerators, since each accelerator calculates
+ *        the k nearest neighbors considering only a part of the training set
+ * @param int testSample: identifier of the first test sample (the others follow this one)
+ * */
+void mergeResults(int testSample) {
+	int *aux = (int *) AUXILIARY_MEMORY;
+	float *dist = (float *) (AUXILIARY_MEMORY + 4 * (NUMBER_ACCELERATORS * N_NEAREST));
+
+	/* for all the processed testing samples */
+	for(int i = 0; i < CORES_PER_DMA; i++) {
+		/* fix indexes */
+		for(int j = 0; j < NUMBER_OF_DMA * N_NEAREST; j++)
+			aux[j] += j / N_NEAREST * CTRL_PER_CLUSTER;
+
+		/* calculate distances */
+		for(int j = 0; j < NUMBER_OF_DMA * N_NEAREST; j++)
+			dist[j] = euclideanDistanceSW(testSample + i, aux[j]);
+
+		/* find knn */
+		for(int j = 0; j < N_NEAREST; j++) {
+			int idx = j;
+
+			for(int k = j + 1; k < NUMBER_OF_DMA * N_NEAREST; k++)
+				if(dist[k] < dist[idx])
+					idx = k;
+
+			float min = dist[idx];
+			dist[idx] = dist[j];
+			dist[j] = min;
+
+			int minIdx = aux[idx];
+			aux[idx] = aux[j];
+			aux[j] = minIdx;
+
+			/* assign one result of N_NEAREST */
+			*(resultsHW + N_NEAREST * (testSample + i) + j) = minIdx;
+		}
+
+		/* increment pointers */
+		aux += NUMBER_OF_DMA * N_NEAREST;
+		dist += NUMBER_OF_DMA * N_NEAREST;
+	}
+
+	return;
+}
+
+/**
+ * @brief performs the euclidean distance between four test samples and all the control samples in
+ * 	      hardware using four similar dedicated units
+ * @param int testSample: identifier of the first test sample (the others follow this one)
+ * */
+void euclideanDistanceHW(int testSample) {
+	/* broadcast testing samples */
+	for(int i = 0; i < CORES_PER_DMA; i++) {
+		DMATransfer((void *) (test_samples + ((testSample + i) * N_COORDINATES)), 4 * N_COORDINATES, send, 0);
+		DMAWaitForCompletion(send, 0);
+	}
+
+	/* send partitions of training set */
+	for(int i = 0; i < NUMBER_OF_DMA; i++)
+		DMATransfer((void *) (control_samples + (i * CTRL_PER_CLUSTER) * N_COORDINATES), 4 * N_COORDINATES * (i != NUMBER_OF_DMA - 1 ? CTRL_PER_CLUSTER : CTRL_LAST_CLUSTER), send, i);
+
+	/* wait for training set partitions to be sent */
+	for(int i = 0; i < NUMBER_OF_DMA; i++)
+		DMAWaitForCompletion(send, i);
+
+	/* retrieve the nearest neighbors for each of the test samples sent to the units */
+	for(int i = 0; i < CORES_PER_DMA; i++) {
+		/* interleave transference by using sequences of cores that are attached to different DMAs */
+		for(int j = 0; j < NUMBER_OF_DMA; j++)
+			DMATransfer((void *) (AUXILIARY_MEMORY + 4 * (j + i * NUMBER_OF_DMA) * N_NEAREST), 4 * N_NEAREST, recv, j);
+
+		/* wait for all the DMAs to complete */
+		for(int j = 0; j < NUMBER_OF_DMA; j++)
+			DMAWaitForCompletion(recv, j);
+	}
+
+	/* merge the results of the several accelerators */
+	mergeResults(testSample);
+
+	return;
+}
+#endif
 
 int main() {
 
@@ -230,12 +324,21 @@ int main() {
 #endif
 
 #if defined(RUN_HW) || defined(DEBUG)
+#if PARALLEL_CFG == 0
 	/* perform the algorithm in hardware */
 	for(int i = 0; i < N_TEST_SAMPLES; i += NUMBER_ACCELERATORS) {
 		Xil_DCacheFlushRange((INTPTR) (resultsHW + 4 * i), NUMBER_ACCELERATORS * N_NEAREST * 4);
 
 		euclideanDistanceHW(i);
 	}
+#else
+	/* perform the algorithm in hardware */
+	for(int i = 0; i < N_TEST_SAMPLES; i += CORES_PER_DMA) {
+		Xil_DCacheFlushRange((INTPTR) AUXILIARY_MEMORY, NUMBER_ACCELERATORS * N_NEAREST * 4);
+
+		euclideanDistanceHW(i);
+	}
+#endif
 
 	/* perform classification (this part is sequential and would add at most 2 units in the final
 	 * speedup so it doesn't worth it to parallelize) */
@@ -281,6 +384,7 @@ int main() {
 	xil_printf("   N Accelerators | %d\n\r", NUMBER_ACCELERATORS);
 	xil_printf("            N DMA | %d\n\r", NUMBER_OF_DMA);
 	xil_printf("    Cores per DMA | %d\n\r", CORES_PER_DMA);
+	xil_printf(" Parallel config. | %d\n\r", PARALLEL_CFG);
 #endif
 
 #ifdef RUN_SW
@@ -296,8 +400,10 @@ int main() {
 #endif
 
 #if defined(RUN_HW) && defined(RUN_SW)
+	float speedup = 1.0 * ((tEndSW - tStartSW) / (COUNTS_PER_SECOND/1000000)) / ((tEndHW - tStartHW) / (COUNTS_PER_SECOND/1000000));
 	xil_printf("-------------------------------------\n\r");
-	    printf("          Speedup | %.2f\n\r", 1.0 * ((tEndSW - tStartSW) / (COUNTS_PER_SECOND/1000000)) / ((tEndHW - tStartHW) / (COUNTS_PER_SECOND/1000000)));
+	    printf("          Speedup | %.2f\n\r", speedup);
+	    printf("   Per sample (~) | %.2f\n\r", (PARALLEL_CFG == 0) ? speedup / NUMBER_ACCELERATORS : speedup / CORES_PER_DMA);
 #endif
 
 	xil_printf("=====================================\n\r");

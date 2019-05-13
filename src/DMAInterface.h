@@ -2,12 +2,15 @@
 #define FAILURE 1
 
 /* ===================================================
- * ========== CHANGE NUMBER OF ACCELERATORS ==========
+ * ========== CHANGE KNNSTUFF CONFIGURATION ==========
  * =================================================== */
-#define NUMBER_OF_DMA 1
-#define CORES_PER_DMA 4
-#define NUMBER_ACCELERATORS NUMBER_OF_DMA * CORES_PER_DMA
+#define NUMBER_OF_DMA 4
+#define CORES_PER_DMA 1
+
+#define PARALLEL_CFG  0
 /* =================================================== */
+
+#define NUMBER_ACCELERATORS (NUMBER_OF_DMA * CORES_PER_DMA)
 
 typedef enum{send, recv} Way;
 typedef int DeviceID;
