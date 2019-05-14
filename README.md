@@ -66,7 +66,7 @@ After creating a new project, the custom IPs need to be packaged and build from 
 
 Select *Next*, *Edit IP*, and *Finish*.
 
-To add the sources of the first IP, right-click on *Design Sources* and select *Add Sources*, *Add or create design sources*, and *Add Files*. Navigate to `rtl/knnaccelerator`, select all the files and press *Finish*. Select the files named `knnAccelerator_v1_0_m_axis`, `knnAccelerator_v1_0_sb_axis`, and `knnAccelerator_v1_0_sp_axis`, right-click and *Remove file from project*.
+To add the sources of the first IP, right-click on *Design Sources* and select *Add Sources*, *Add or create design sources*, and *Add Files*. Navigate to [`rtl/knnaccelerator`](rtl/knnaccelerator), select all the files and press *Finish*. Select the files named `knnAccelerator_v1_0_m_axis`, `knnAccelerator_v1_0_sb_axis`, and `knnAccelerator_v1_0_sp_axis`, right-click and *Remove file from project*.
 
 In the *Sources* menu, find the *Libraries* tab. Select the file `knnCluster_Pkg.vhd`, under *Design Sources*, *VHDL*, *xil_defaultlib*. Right-click and select *Set Library*. Write *knnCluster* and hit *Ok*.
 
@@ -82,7 +82,7 @@ Reopen the project that you created in section [Create a new project](#create-a-
 
 Select *Next*, *Edit IP*, and *Finish*.
 
-To add the sources of the second IP, right-click on *Design Sources* and select *Add Sources*, *Add or create design sources*, and *Add Files*. Navigate to `rtl/knncluster`, select all the files and press *Finish*. Select the files named `knnCluster_v1_0_m_axis`, `knnCluster_v1_0_sb_axis`, and `knnCluster_v1_0_sp_axis`, right-click and *Remove file from project*.
+To add the sources of the second IP, right-click on *Design Sources* and select *Add Sources*, *Add or create design sources*, and *Add Files*. Navigate to [`rtl/knncluster`](rtl/knncluster), select all the files and press *Finish*. Select the files named `knnCluster_v1_0_m_axis`, `knnCluster_v1_0_sb_axis`, and `knnCluster_v1_0_sp_axis`, right-click and *Remove file from project*.
 
 In the *Sources* menu, find the *Libraries* tab. Select the file *knnCluster_Pkg.vhd*, under *Design Sources*, *VHDL*, *xil_defaultlib*. Right-click and select *Set Library*. Write *knnCluster* and hit *Ok*.
 
@@ -188,11 +188,11 @@ Congratulations! You just got started with KNNStuff. Note that this tutorial onl
 The KNNStuff can be reconfigured at hardware level, software level, or both to comply with the requirements of a given classifier.
 
 ### Classifier parameters
-To change the number of K-Nearest Neighbors (K), the maximum number of features allowed per sample and the number of accelerators per cluster, the files `rtl/knnaccelerator/knnCluster_Pkg` and `rtl/knncluster/knnCluster_Pkg` need to be modified.
+To change the number of K-Nearest Neighbors (K), the maximum number of features allowed per sample and the number of accelerators per cluster, the files [`rtl/knnaccelerator/knnCluster_Pkg`](rtl/knnaccelerator/knnCluster_Pkg) and [`rtl/knncluster/knnCluster_Pkg`](rtl/knncluster/knnCluster_Pkg) need to be modified.
 
   - To change K, adjust the constant `KNN`;
   - To change the maximum number of features allowed per sample, adjust the constant `TEST_DEPTH` to be equal to ceil(log2(M)), where M is the maximum number of features allowed per sample;
-  - To change the number of accelerators per cluster (only relevant for `rtl/knncluster/knnCluster_Pkg`), adjust the constant `N_ACCELS` to be equal to log2(A), where A is the number of accelerators. **Note that the number of accelerators must be a potency of 2.**
+  - To change the number of accelerators per cluster (only relevant for [`rtl/knncluster/knnCluster_Pkg`](rtl/knncluster/knnCluster_Pkg)), adjust the constant `N_ACCELS` to be equal to log2(A), where A is the number of accelerators. **Note that the number of accelerators must be a potency of 2.**
   
 After performing the required modifications, you need to merge the modifications and repackage the IP. Open the project that contains the block design of KNNStuff and hit *Reports*, *Report IP Status*. Hit *Refresh IP Catalog*, *Upgrade Selected*, *Ok* and *Skip*. Navigate to the *Tcl Console* and run the command `reset_project`. Then, regenerate the bitstream, export the design to SDK **twice**, and launch SDK. You might also have to close SDK after opening it for the first time and relaunch it. Otherwise, it might wrongly tell you that some libraries are missing.
 
@@ -218,9 +218,9 @@ Go ahead and regenerate the bitstream, export the design to SDK and launch SDK. 
 
 ### Change parallel configuration
 
-KNNStuff can parallelize the testing samples being classified simultaneously or fasten the classification of a single sample by spliting the training set in several subsets and transfering those subsets in parallel to the accelerators. In that case, each accelerator calculates the KNN of each subset and the results are merged by the processor. To use this configuration, you need to switch the connections of the `sp_axis` and `sb_axis` of each accelerator/cluster of accelerators in the block design and regenerate the bit stream. By doing so, each testing sample is broadcasted to all accelerators/clusters of accelerators while the training set will be different per accelerator/cluster of accelerators. For instance, to generate KNNStuff using this configuration with two clusters of four clusters each, run the tcl script in [`scripts/generate_bd_parallel_cfg_1.tcl`](scripts/generate_bd_parallel_cfg_1.tcl)
+KNNStuff can parallelize the testing samples being classified simultaneously or fasten the classification of a single sample by splitting the training set into several subsets and transferring those subsets in parallel to the accelerators. In that case, each accelerator calculates the KNN of each subset and the results are merged by the processor. To use this configuration, you need to switch the connections of the `sp_axis` and `sb_axis` of each accelerator/cluster in the block design and regenerate the bit stream. By doing so, each testing sample is broadcasted to all accelerators/clusters while the training set will be different per accelerator/cluster. For instance, to generate KNNStuff using this configuration with two clusters of four clusters each, run the tcl script in [`scripts/generate_bd_parallel_cfg_1.tcl`](scripts/generate_bd_parallel_cfg_1.tcl)
 
-Also, change [line 10 of `src/DMAInterface.h`](src/DMAInterface.h#L10) and set `PARALLEL_CFG=1`. Be sure to adjust the number of DMAs and accelerators per cluster as well. Note that this configuration only makes sense if you are using multiple DMA engines.
+Also, change [line 10 of `src/DMAInterface.h`](src/DMAInterface.h#L10) and set `PARALLEL_CFG=1`. Be sure to adjust the number of DMAs and accelerators per cluster as well. **Note that this configuration only makes sense if you are using multiple DMA engines.**
 
 ### Software and dataset parameters
 The dataset that goes with the example in this tutorial is the [Iris dataset](http://archive.ics.uci.edu/ml/datasets/iris), which is rather small and has no practical use. However, in the [KNNSim repository](https://github.com/joaomiguelvieira/KNNSim/tree/master/datasets) you can find larger datasets that may be used to evaluate the performance of the system. To use them, replace the file pointed in the run configuration under *Application* and *Advanced Options: Edit* by the one you want to use. **Keep the same address `0x100000` for the file.**
