@@ -94,7 +94,7 @@ After packaging both IPs, you can close all Vivado projects but the first one yo
 ![new_project7](img/new_project7.png "New Project 7")
 
 Under *IP INTEGRATOR*, hit *Create Block Design*. You can name it whatever you want. Then, run the script 
-[`scripts/generate_bd_parallel_cfg_0.tcl`](scripts/scripts/generate_bd_parallel_cfg_0.tcl "Generate Block Design") to generate the block diagram of the system. You can do so by either selecting *Tools* and *Run Tcl Script* or by simply copying and pasting the content of the script in the *Tcl Console*. If you completed all the previous steps correctly, there should be no errors, and the output should look like the following.
+[`scripts/generate_bd_parallel_cfg_0.tcl`](scripts/generate_bd_parallel_cfg_0.tcl "Generate Block Design") to generate the block diagram of the system. You can do so by either selecting *Tools* and *Run Tcl Script* or by simply copying and pasting the content of the script in the *Tcl Console*. If you completed all the previous steps correctly, there should be no errors, and the output should look like the following.
 
 ```
 # create_bd_cell -type ip -vlnv xilinx.com:ip:processing_system7:5.5 processing_system7_0
