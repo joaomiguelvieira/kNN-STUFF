@@ -167,18 +167,20 @@ If everything went well, you should see an output similar to the following in th
     N Coordinates | 4
    N Test Samples | 50
 N Control Samples | 100
--------------------------------------                                     
-   N Accelerators | 4                                                     
-            N DMA | 1                                                     
-    Cores per DMA | 4                                                     
--------------------------------------                                     
-    Software Time | 3170.56 us
-  Software Cycles | 2060866
 -------------------------------------
-    Hardware Time | 307.17 us
-  Hardware Cycles | 199658
+   N Accelerators | 4
+            N DMA | 1
+    Cores per DMA | 4
+ Parallel config. | 0
 -------------------------------------
-          Speedup | 10.33
+    Software Time | 3153.55 us
+  Software Cycles | 2049806
+-------------------------------------
+    Hardware Time | 334.10 us
+  Hardware Cycles | 217164
+-------------------------------------
+          Speedup | 9.44
+   Per sample (~) | 2.36
 =====================================
 ```
 
