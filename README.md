@@ -1,6 +1,8 @@
 ![knnstuff_logo](img/logo.png "KNNStuff")
 
-K-Nearest Neighbors STreaming Unit for FPGA (KNNStuff) is a scalable RTL implementation of the KNN classifier. Since the design is highly reconfigurable, KNNStuff can be implemented in FPGAs of all sizes. This repository contains all the necessary files to rebuilt a project with KNNStuff. For testing purposes, please refer to the [KNNSim repository](https://github.com/joaomiguelvieira/KNNSim), which includes a tuned version of the KNN classifier suited to achieve maximum performance in general purpose processors.
+K-Nearest Neighbors STreaming Unit for FPGA (KNNStuff) is a scalable RTL implementation of the KNN classifier. Since the design is highly reconfigurable, KNNStuff can be implemented in FPGAs of all sizes. KNNStuff can be configured to achieve optimum parallelism in terms of the number of testing samples being classified at once or fastest classification of a single sample. Also, depending on the target device, more accelerators can be instantiated to increase performance.
+
+This repository contains all the necessary files to rebuilt a project with KNNStuff. For testing purposes, please refer to the [KNNSim repository](https://github.com/joaomiguelvieira/KNNSim), which includes a tuned version of the KNN classifier suited to achieve maximum performance in general purpose processors.
 
 - [Content of this repository](#content-of-this-repository)
 - [Pre-requisites](#pre-requisites)
@@ -11,11 +13,13 @@ K-Nearest Neighbors STreaming Unit for FPGA (KNNStuff) is a scalable RTL impleme
 - [Run KNNStuff](#run-knnstuff)
 - [Customizing KNNStuff parameters](#customizing-knnstuff-parameters)
   - [Classifier parameters](#classifier-parameters)
+  - [Change parallel configuration](#change-parallel-configuration)
   - [Software and dataset parameters](#software-and-dataset-parameters)
   - [Add/remove accelerators and clusters of accelerators](#addremove-accelerators-and-clusters-of-accelerators)
   - [Software run modes](#software-run-modes)
 
 ## Content of this repository
+* `/img`: contains the images used in this tutorial;
 * `/rtl`: contains the VHDL files and the Xilinx IP files to generate the custom IP cores;
 * `/scripts`: contains auxiliary scripts to help to build the project;
 * `/src`: contains the source code of the KNN classifier.
@@ -90,7 +94,7 @@ After packaging both IPs, you can close all Vivado projects but the first one yo
 ![new_project7](img/new_project7.png "New Project 7")
 
 Under *IP INTEGRATOR*, hit *Create Block Design*. You can name it whatever you want. Then, run the script 
-![generate_bd](scripts/generate_bd.tcl "Generate Block Design") to generate the block diagram of the system. You can do so by either selecting *Tools* and *Run Tcl Script* or by simply copying and pasting the content of the script in the *Tcl Console*. If you completed all the previous steps correctly, there should be no errors, and the output should look like the following.
+[`scripts/generate_bd_parallel_cfg_0.tcl`](scripts/scripts/generate_bd_parallel_cfg_0.tcl "Generate Block Design") to generate the block diagram of the system. You can do so by either selecting *Tools* and *Run Tcl Script* or by simply copying and pasting the content of the script in the *Tcl Console*. If you completed all the previous steps correctly, there should be no errors, and the output should look like the following.
 
 ```
 # create_bd_cell -type ip -vlnv xilinx.com:ip:processing_system7:5.5 processing_system7_0
@@ -150,7 +154,7 @@ At this point, connect the *UART/PROG* connector of Zybo board to your computer 
 
 From *Xilinx* select *Program FPGA* and hit *Program*. You will see a progress bar showing that the device is being programmed.
 
-On [line 199 of `src/KNN.c`](src/KNN.c#L199), right after entering the `main`, add `return 0`. Then, right-click on *KNN*, in the *Project Explorer* menu, *Run As* and *Launch On Hardware (System Debugger)*. **Do not worry if the output console does not show anything. At this point that is normal.** Then, remove the line that you just added to the code, restoring the `main` routine to its original code.
+On [line 293 of `src/KNN.c`](src/KNN.c#L293), right after entering the `main`, add `return 0`. Then, right-click on *KNN*, in the *Project Explorer* menu, *Run As* and *Launch On Hardware (System Debugger)*. **Do not worry if the output console does not show anything. At this point that is normal.** Then, remove the line that you just added to the code, restoring the `main` routine to its original code.
 
 Under *Run*, *Run Configurations*, there should be now a profile called *System Debugger using Debug_KNN.elf on Local*. Select that profile and navigate to *Application*, *Advanced Options: Edit* and add a data file to be downloaded to the board before running the software. That file can be downloaded from another GitHub repository called [KNNSim](https://github.com/joaomiguelvieira/KNNSim/blob/master/datasets/bin/0_iris.bin). Set the address of that file to be `0x100000`. Hit *Apply*, and then hit *Run*.
 
@@ -178,7 +182,7 @@ N Control Samples | 100
 =====================================
 ```
 
-Congratulations! You just got started with KNNStuff.
+Congratulations! You just got started with KNNStuff. Note that this tutorial only shows how to implement KNNStuff with one cluster of four accelerators using the default parallel configuration, which maximizes the number of testing samples being classified simultaneously. To configure KNNStuff differently, reffer to [this section](#customizing-knnstuff-parameters).
 
 ## Customizing KNNStuff parameters
 The KNNStuff can be reconfigured at hardware level, software level, or both to comply with the requirements of a given classifier.
@@ -211,6 +215,12 @@ reset_project
 If you modified the design correctly, no errors should pop up.
 
 Go ahead and regenerate the bitstream, export the design to SDK and launch SDK. Before running the application, be sure to modify [lines 7 and 8 of `src/DMAInterface.h`](src/DMAInterface.h#L7) to comply with the modifications.
+
+### Change parallel configuration
+
+KNNStuff can parallelize the testing samples being classified simultaneously or fasten the classification of a single sample by spliting the training set in several subsets and transfering those subsets in parallel to the accelerators. In that case, each accelerator calculates the KNN of each subset and the results are merged by the processor. To use this configuration, you need to switch the connections of the `sp_axis` and `sb_axis` of each accelerator/cluster of accelerators in the block design and regenerate the bit stream. By doing so, each testing sample is broadcasted to all accelerators/clusters of accelerators while the training set will be different per accelerator/cluster of accelerators. For instance, to generate KNNStuff using this configuration with two clusters of four clusters each, run the tcl script in [`scripts/generate_bd_parallel_cfg_1.tcl`](scripts/generate_bd_parallel_cfg_1.tcl)
+
+Also, change [line 10 of `src/DMAInterface.h`](src/DMAInterface.h#L10) and set `PARALLEL_CFG=1`. Be sure to adjust the number of DMAs and accelerators per cluster as well. Note that this configuration only makes sense if you are using multiple DMA engines.
 
 ### Software and dataset parameters
 The dataset that goes with the example in this tutorial is the [Iris dataset](http://archive.ics.uci.edu/ml/datasets/iris), which is rather small and has no practical use. However, in the [KNNSim repository](https://github.com/joaomiguelvieira/KNNSim/tree/master/datasets) you can find larger datasets that may be used to evaluate the performance of the system. To use them, replace the file pointed in the run configuration under *Application* and *Advanced Options: Edit* by the one you want to use. **Keep the same address `0x100000` for the file.**
