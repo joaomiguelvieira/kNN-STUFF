@@ -182,7 +182,7 @@ N Control Samples | 100
 =====================================
 ```
 
-Congratulations! You just got started with KNNStuff. Note that this tutorial only shows how to implement KNNStuff with one cluster of four accelerators using the default parallel configuration, which maximizes the number of testing samples being classified simultaneously. To configure KNNStuff differently, reffer to [this section](#customizing-knnstuff-parameters).
+Congratulations! You just got started with KNNStuff. Note that this tutorial only shows how to implement KNNStuff with one cluster of four accelerators using the default parallel configuration, which maximizes the number of testing samples being classified simultaneously. To configure KNNStuff differently, reffer to section [Customizing KNNStuff parameters](#customizing-knnstuff-parameters).
 
 ## Customizing KNNStuff parameters
 The KNNStuff can be reconfigured at hardware level, software level, or both to comply with the requirements of a given classifier.
