@@ -4,8 +4,8 @@
 /* ===================================================
  * ========== CHANGE KNNSTUFF CONFIGURATION ==========
  * =================================================== */
-#define NUMBER_OF_DMA 4
-#define CORES_PER_DMA 1
+#define NUMBER_OF_DMA 1
+#define CORES_PER_DMA 4
 
 #define PARALLEL_CFG  0
 /* =================================================== */

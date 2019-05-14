@@ -12,10 +12,10 @@
  * ========== CHANGE PARAMETERS TO ADAPT TO THE SYSTEM ==========
  * ============================================================== */
 #define N_NEAREST 5
-#define N_CLASSES 29
-#define N_COORDINATES 8
-#define N_TEST_SAMPLES 1393
-#define N_CONTROL_SAMPLES 2784
+#define N_CLASSES 3
+#define N_COORDINATES 4
+#define N_TEST_SAMPLES 50
+#define N_CONTROL_SAMPLES 100
 
 //#define DEBUG
 #define RUN_SW
