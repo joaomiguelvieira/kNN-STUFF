@@ -15,26 +15,26 @@ apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {Auto} Cl
 apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {/processing_system7_0/FCLK_CLK0 (100 MHz)} Clk_slave {Auto} Clk_xbar {/processing_system7_0/FCLK_CLK0 (100 MHz)} Master {/processing_system7_0/M_AXI_GP0} Slave {/axi_dma_1/S_AXI_LITE} intc_ip {/ps7_0_axi_periph} master_apm {0}}  [get_bd_intf_pins axi_dma_1/S_AXI_LITE]
 apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {Auto} Clk_slave {/processing_system7_0/FCLK_CLK0 (100 MHz)} Clk_xbar {/processing_system7_0/FCLK_CLK0 (100 MHz)} Master {/axi_dma_1/M_AXI_S2MM} Slave {/processing_system7_0/S_AXI_HP1} intc_ip {/axi_mem_intercon_1} master_apm {0}}  [get_bd_intf_pins axi_dma_1/M_AXI_S2MM]
 
-# instantiate and configure broadcaster
+# instantiate broadcaster
 create_bd_cell -type ip -vlnv xilinx.com:ip:axis_broadcaster:1.1 axis_broadcaster_0
 set_property -dict [list CONFIG.NUM_MI {3} CONFIG.M02_TDATA_REMAP {tdata[7:0]}] [get_bd_cells axis_broadcaster_0]
 
 # instantiate knncluster 
 create_bd_cell -type ip -vlnv user.org:user:knnCluster:1.0 knnCluster_0
-create_bd_cell -type ip -vlnv user.org:user:knnCluster:1.0 knnCluster_1
+copy_bd_objs /  [get_bd_cells {knnCluster_0}]
 
-# connect dma, broadcaster and knncluster and apply automations
-connect_bd_intf_net [get_bd_intf_pins axis_broadcaster_0/M00_AXIS] [get_bd_intf_pins knnCluster_0/sp_axis]
-connect_bd_intf_net [get_bd_intf_pins axis_broadcaster_0/M01_AXIS] [get_bd_intf_pins knnCluster_1/sp_axis]
-connect_bd_intf_net [get_bd_intf_pins axis_broadcaster_0/M02_AXIS] [get_bd_intf_pins knnCluster_0/sb_axis]
+# connect dmas, broadcaster and knnclusters and apply automations
+connect_bd_intf_net [get_bd_intf_pins axis_broadcaster_0/S_AXIS] [get_bd_intf_pins axi_dma_0/M_AXIS_MM2S]
 connect_bd_intf_net [get_bd_intf_pins knnCluster_0/m_axis] [get_bd_intf_pins axi_dma_0/S_AXIS_S2MM]
 connect_bd_intf_net [get_bd_intf_pins knnCluster_1/m_axis] [get_bd_intf_pins axi_dma_1/S_AXIS_S2MM]
-connect_bd_intf_net [get_bd_intf_pins axis_broadcaster_0/S_AXIS] [get_bd_intf_pins axi_dma_0/M_AXIS_MM2S]
-connect_bd_intf_net [get_bd_intf_pins knnCluster_1/sb_axis] [get_bd_intf_pins axi_dma_1/M_AXIS_MM2S]
+connect_bd_intf_net [get_bd_intf_pins knnCluster_0/sp_axis] [get_bd_intf_pins axis_broadcaster_0/M00_AXIS]
+connect_bd_intf_net [get_bd_intf_pins knnCluster_1/sp_axis] [get_bd_intf_pins axis_broadcaster_0/M01_AXIS]
+connect_bd_intf_net [get_bd_intf_pins knnCluster_0/sb_axis] [get_bd_intf_pins axis_broadcaster_0/M02_AXIS]
+connect_bd_intf_net [get_bd_intf_pins axi_dma_1/M_AXIS_MM2S] [get_bd_intf_pins knnCluster_1/sb_axis]
 apply_bd_automation -rule xilinx.com:bd_rule:clkrst -config {Clk "/processing_system7_0/FCLK_CLK0 (100 MHz)" }  [get_bd_pins axis_broadcaster_0/aclk]
 apply_bd_automation -rule xilinx.com:bd_rule:clkrst -config {Clk "/processing_system7_0/FCLK_CLK0 (100 MHz)" }  [get_bd_pins knnCluster_0/m_axis_aclk]
-apply_bd_automation -rule xilinx.com:bd_rule:clkrst -config {Clk "/processing_system7_0/FCLK_CLK0 (100 MHz)" }  [get_bd_pins knnCluster_1/sb_axis_aclk]
 apply_bd_automation -rule xilinx.com:bd_rule:clkrst -config {Clk "/processing_system7_0/FCLK_CLK0 (100 MHz)" }  [get_bd_pins knnCluster_1/m_axis_aclk]
+apply_bd_automation -rule xilinx.com:bd_rule:clkrst -config {Clk "/processing_system7_0/FCLK_CLK0 (100 MHz)" }  [get_bd_pins knnCluster_1/sb_axis_aclk]
 
 # regenerate, validate and save design
 regenerate_bd_layout
