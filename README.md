@@ -66,9 +66,9 @@ After creating a new project, the custom IPs need to be packaged and build from 
 
 Select *Next*, *Edit IP*, and *Finish*.
 
-To add the sources of the first IP, right-click on *Design Sources* and select *Add Sources*, *Add or create design sources*, and *Add Files*. Navigate to `rtl/knnaccelerator`, select all the files and press *Finish*. Select the files named *knnAccelerator_v1_0_m_axis*, *knnAccelerator_v1_0_sb_axis*, and *knnAccelerator_v1_0_sp_axis*, right-click and *Remove file from project*.
+To add the sources of the first IP, right-click on *Design Sources* and select *Add Sources*, *Add or create design sources*, and *Add Files*. Navigate to `rtl/knnaccelerator`, select all the files and press *Finish*. Select the files named `knnAccelerator_v1_0_m_axis`, `knnAccelerator_v1_0_sb_axis`, and `knnAccelerator_v1_0_sp_axis`, right-click and *Remove file from project*.
 
-In the *Sources* menu, find the *Libraries* tab. Select the file *knnCluster_Pkg.vhd*, under *Design Sources*, *VHDL*, *xil_defaultlib*. Right-click and select *Set Library*. Write *knnCluster* and hit *Ok*.
+In the *Sources* menu, find the *Libraries* tab. Select the file `knnCluster_Pkg.vhd`, under *Design Sources*, *VHDL*, *xil_defaultlib*. Right-click and select *Set Library*. Write *knnCluster* and hit *Ok*.
 
 From the flow navigator menu, select *Package IP*. Go through the several tabs that have the review icon (a small sheet of paper with a pencil) and merge all the changes (click on the suggestions presented in the yellow bar). Finally, select *Review and Package* and *Re-Package IP*. **Note that if you want to keep the project after packaging the IP, you need to select first *Edit packaging settings* and deselect the option *Delete project after packaging***.
 
@@ -82,7 +82,7 @@ Reopen the project that you created in section [Create a new project](#create-a-
 
 Select *Next*, *Edit IP*, and *Finish*.
 
-To add the sources of the second IP, right-click on *Design Sources* and select *Add Sources*, *Add or create design sources*, and *Add Files*. Navigate to `rtl/knncluster`, select all the files and press *Finish*. Select the files named *knnCluster_v1_0_m_axis*, *knnCluster_v1_0_sb_axis*, and *knnCluster_v1_0_sp_axis*, right-click and *Remove file from project*.
+To add the sources of the second IP, right-click on *Design Sources* and select *Add Sources*, *Add or create design sources*, and *Add Files*. Navigate to `rtl/knncluster`, select all the files and press *Finish*. Select the files named `knnCluster_v1_0_m_axis`, `knnCluster_v1_0_sb_axis`, and `knnCluster_v1_0_sp_axis`, right-click and *Remove file from project*.
 
 In the *Sources* menu, find the *Libraries* tab. Select the file *knnCluster_Pkg.vhd*, under *Design Sources*, *VHDL*, *xil_defaultlib*. Right-click and select *Set Library*. Write *knnCluster* and hit *Ok*.
 
@@ -144,11 +144,11 @@ Before creating an SDK project, from the Vivado menu hit *File*, *Export* and *E
 
 After exporting the design **twice**, hit *File* and *Launch SDK*.
 
-In the Vivado SDK window, hit *File*, *New* and *Application Project*. Name the project "KNN" and hit *Next*. Choose *Empty Application* and hit *Finish*. Expand the newly created project *KNN* in the *Project Explorer* menu, right-click on *src* and hit *Import*. Pick *General*, *File System* and *Next*. Navigate to the directory where you cloned this GitHub repo, select `src` and hit *Ok*. Select all the files contained in that folder and hit *Finish*.
+In the Vivado SDK window, hit *File*, *New* and *Application Project*. Name the project "KNN" and hit *Next*. Choose *Empty Application* and hit *Finish*. Expand the newly created project *KNN* in the *Project Explorer* menu, right-click on `src` and hit *Import*. Pick *General*, *File System* and *Next*. Navigate to the directory where you cloned this GitHub repo, select `src` and hit *Ok*. Select all the files contained in that folder and hit *Finish*.
 
 ## Run KNNStuff
 
-After creating your project and importing the sources, right-click on *KNN* under the *Project Explorer* menu and select *Generate Linker Script*. Change the place to put the *Code Sections*, the *Data Sections* and the *Heap and Stack* to `ps7_ram_0`. Set the *Heap Size* and the *Stack Size* to be equal to 10 KB. Press *Generate* to generate the new linker script.
+After creating your project and importing the sources, right-click on *KNN* under the *Project Explorer* menu and select *Generate Linker Script*. Change the place to put the *Code Sections*, the *Data Sections* and the *Heap and Stack* to *ps7_ram_0*. Set the *Heap Size* and the *Stack Size* to be equal to 10 KB. Press *Generate* to generate the new linker script.
 
 At this point, connect the *UART/PROG* connector of Zybo board to your computer using a micro USB cable and turn on the board. In a terminal, use the command `dmesg` to determine where the device was mapped. In my case, it was mapped to `/dev/ttyUSB1`. Use an application like `screen` or `minicom` to open a connection with the board to see the output. If you are using `minicom`, that can be achieved with the command `sudo minicom -D /dev/ttyUSB1`. **Do not forget to replace `/dev/ttyUSB1` by the actual board's identifier.**
 
