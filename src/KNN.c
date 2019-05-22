@@ -23,7 +23,7 @@
 /* ============================================================== */
 
 #if PARALLEL_CFG == 1
-#define CTRL_PER_CLUSTER  N_CONTROL_SAMPLES / NUMBER_OF_DMA
+#define CTRL_PER_CLUSTER  (N_CONTROL_SAMPLES / NUMBER_OF_DMA)
 #define CTRL_LAST_CLUSTER CTRL_PER_CLUSTER + (N_CONTROL_SAMPLES % NUMBER_OF_DMA)
 #endif
 
