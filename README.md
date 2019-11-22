@@ -1,8 +1,8 @@
-![knnstuff_logo](img/logo.png "KNNStuff")
+![knnstuff_logo](img/logo.png "kNN-STUFF")
 
-K-Nearest Neighbors STreaming Unit for FPGA (KNNStuff) is a scalable RTL implementation of the KNN classifier. Since the design is highly reconfigurable, KNNStuff can be implemented in FPGAs of all sizes. KNNStuff can be configured to achieve optimum parallelism in terms of the number of testing samples being classified at once or fastest classification of a single sample. Also, depending on the target device, more accelerators can be instantiated to increase performance.
+K-Nearest Neighbors STreaming Unit for FPGA (kNN-STUFF) is a scalable RTL implementation of the KNN classifier. Since the design is highly reconfigurable, kNN-STUFF can be implemented in FPGAs of all sizes. kNN-STUFF can be configured to achieve optimum parallelism in terms of the number of testing samples being classified at once or fastest classification of a single sample. Also, depending on the target device, more accelerators can be instantiated to increase performance.
 
-This repository contains all the necessary files to rebuilt a project with KNNStuff. For testing purposes, please refer to the [KNNSim repository](https://github.com/joaomiguelvieira/KNNSim), which includes a tuned version of the KNN classifier suited to achieve maximum performance in general purpose processors.
+This repository contains all the necessary files to rebuilt a project with kNN-STUFF. For testing purposes, please refer to the [KNNSim repository](https://github.com/joaomiguelvieira/KNNSim), which includes a tuned version of the KNN classifier suited to achieve maximum performance in general purpose processors.
 
 - [Content of this repository](#content-of-this-repository)
 - [Pre-requisites](#pre-requisites)
@@ -10,8 +10,8 @@ This repository contains all the necessary files to rebuilt a project with KNNSt
 - [Package the IPs](#package-the-ips)
 - [Build the block diagram](#build-the-block-diagram)
 - [Create an application project](#create-an-application-project)
-- [Run KNNStuff](#run-knnstuff)
-- [Customizing KNNStuff parameters](#customizing-knnstuff-parameters)
+- [Run kNN-STUFF](#run-knnstuff)
+- [Customizing kNN-STUFF parameters](#customizing-knnstuff-parameters)
   - [Classifier parameters](#classifier-parameters)
   - [Change parallel configuration](#change-parallel-configuration)
   - [Software and dataset parameters](#software-and-dataset-parameters)
@@ -25,7 +25,7 @@ This repository contains all the necessary files to rebuilt a project with KNNSt
 * `/src`: contains the source code of the KNN classifier.
 
 ## Pre-requisites
-To use KNNStuff, the minimum requisits are demanded:
+To use kNN-STUFF, the minimum requisits are demanded:
 * A host computer running Linux;
 * Xilinx Vivado 2018.3 or newer:
   * Follow [this](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/2018-3.html) link to download;
@@ -146,7 +146,7 @@ After exporting the design **twice**, hit *File* and *Launch SDK*.
 
 In the Vivado SDK window, hit *File*, *New* and *Application Project*. Name the project "KNN" and hit *Next*. Choose *Empty Application* and hit *Finish*. Expand the newly created project *KNN* in the *Project Explorer* menu, right-click on `src` and hit *Import*. Pick *General*, *File System* and *Next*. Navigate to the directory where you cloned this GitHub repo, select `src` and hit *Ok*. Select all the files contained in that folder and hit *Finish*.
 
-## Run KNNStuff
+## Run kNN-STUFF
 
 After creating your project and importing the sources, right-click on *KNN* under the *Project Explorer* menu and select *Generate Linker Script*. Change the place to put the *Code Sections*, the *Data Sections* and the *Heap and Stack* to *ps7_ram_0*. Set the *Heap Size* and the *Stack Size* to be equal to 10 KB. Press *Generate* to generate the new linker script.
 
@@ -184,10 +184,10 @@ N Control Samples | 100
 =====================================
 ```
 
-Congratulations! You just got started with KNNStuff. Note that this tutorial only shows how to implement KNNStuff with one cluster of four accelerators using the default parallel configuration, which maximizes the number of testing samples being classified simultaneously. To configure KNNStuff differently, reffer to section [Customizing KNNStuff parameters](#customizing-knnstuff-parameters).
+Congratulations! You just got started with kNN-STUFF. Note that this tutorial only shows how to implement kNN-STUFF with one cluster of four accelerators using the default parallel configuration, which maximizes the number of testing samples being classified simultaneously. To configure kNN-STUFF differently, reffer to section [Customizing kNN-STUFF parameters](#customizing-knnstuff-parameters).
 
-## Customizing KNNStuff parameters
-The KNNStuff can be reconfigured at hardware level, software level, or both to comply with the requirements of a given classifier.
+## Customizing kNN-STUFF parameters
+The kNN-STUFF can be reconfigured at hardware level, software level, or both to comply with the requirements of a given classifier.
 
 ### Classifier parameters
 To change the number of K-Nearest Neighbors (K), the maximum number of features allowed per sample and the number of accelerators per cluster, the files [`rtl/knnaccelerator/knnCluster_Pkg`](rtl/knnaccelerator/knnCluster_Pkg) and [`rtl/knncluster/knnCluster_Pkg`](rtl/knncluster/knnCluster_Pkg) need to be modified.
@@ -196,7 +196,7 @@ To change the number of K-Nearest Neighbors (K), the maximum number of features 
   - To change the maximum number of features allowed per sample, adjust the constant `TEST_DEPTH` to be equal to ceil(log2(M)), where M is the maximum number of features allowed per sample;
   - To change the number of accelerators per cluster (only relevant for [`rtl/knncluster/knnCluster_Pkg`](rtl/knncluster/knnCluster_Pkg)), adjust the constant `N_ACCELS` to be equal to log2(A), where A is the number of accelerators. **Note that the number of accelerators must be a potency of 2.**
   
-After performing the required modifications, you need to merge the modifications and repackage the IP. Open the project that contains the block design of KNNStuff and hit *Reports*, *Report IP Status*. Hit *Refresh IP Catalog*, *Upgrade Selected*, *Ok* and *Skip*. Navigate to the *Tcl Console* and run the command `reset_project`. Then, regenerate the bitstream, export the design to SDK **twice**, and launch SDK. You might also have to close SDK after opening it for the first time and relaunch it. Otherwise, it might wrongly tell you that some libraries are missing.
+After performing the required modifications, you need to merge the modifications and repackage the IP. Open the project that contains the block design of kNN-STUFF and hit *Reports*, *Report IP Status*. Hit *Refresh IP Catalog*, *Upgrade Selected*, *Ok* and *Skip*. Navigate to the *Tcl Console* and run the command `reset_project`. Then, regenerate the bitstream, export the design to SDK **twice**, and launch SDK. You might also have to close SDK after opening it for the first time and relaunch it. Otherwise, it might wrongly tell you that some libraries are missing.
 
 Also, before running your project, if you changed K or the number of accelerators per cluster, you also have to modify [line 14 of `src/KNN.c`](src/KNN.c#L14) and [line 8 of `src/DMAInterface.h`](src/DMAInterface.h#L8), respectively.
 
@@ -220,7 +220,7 @@ Go ahead and regenerate the bitstream, export the design to SDK and launch SDK. 
 
 ### Change parallel configuration
 
-KNNStuff can parallelize the testing samples being classified simultaneously or fasten the classification of a single sample by splitting the training set into several subsets and transferring those subsets in parallel to the accelerators. In that case, each accelerator calculates the KNN of each subset and the results are merged by the processor. To use this configuration, you need to switch the connections of the `sp_axis` and `sb_axis` of each accelerator/cluster in the block design and regenerate the bit stream. By doing so, each testing sample is broadcasted to all accelerators/clusters while the training set will be different per accelerator/cluster. For instance, to generate KNNStuff using this configuration with two clusters of four clusters each, run the tcl script in [`scripts/generate_bd_parallel_cfg_1.tcl`](scripts/generate_bd_parallel_cfg_1.tcl)
+kNN-STUFF can parallelize the testing samples being classified simultaneously or fasten the classification of a single sample by splitting the training set into several subsets and transferring those subsets in parallel to the accelerators. In that case, each accelerator calculates the KNN of each subset and the results are merged by the processor. To use this configuration, you need to switch the connections of the `sp_axis` and `sb_axis` of each accelerator/cluster in the block design and regenerate the bit stream. By doing so, each testing sample is broadcasted to all accelerators/clusters while the training set will be different per accelerator/cluster. For instance, to generate kNN-STUFF using this configuration with two clusters of four clusters each, run the tcl script in [`scripts/generate_bd_parallel_cfg_1.tcl`](scripts/generate_bd_parallel_cfg_1.tcl)
 
 Also, change [line 10 of `src/DMAInterface.h`](src/DMAInterface.h#L10) and set `PARALLEL_CFG=1`. Be sure to adjust the number of DMAs and accelerators per cluster as well. **Note that this configuration only makes sense if you are using multiple DMA engines.**
 
@@ -236,6 +236,6 @@ To run in debug mode, the `DEBUG` flag must be set. In this mode, both the hardw
 
 To run in only software mode, the `RUN_SW` flag must be set, and all the other flags must be unset. Using this mode provides timing results for the software version of the classifier running exclusively on the Processing System (PS) of the Zynq device.
 
-To run in only hardware mode, the `RUN_HW` flag must be set, and all the other flags must be unset. Using this mode provides timing results for the version of the classifier accelerated by KNNStuff.
+To run in only hardware mode, the `RUN_HW` flag must be set, and all the other flags must be unset. Using this mode provides timing results for the version of the classifier accelerated by kNN-STUFF.
 
-To run in both software and hardware mode, the flags `RUN_SW` and `RUN_HW` must be set, and the `DEBUG` flag must be unset. Using this mode provides timing results for both the software version of the classifier running exclusively on the PS of the Zynq device and the version of the classifier accelerated by KNNStuff. Also, the performance improvement of the classifier using the KNNStuff over the version using only the PS of the Zynq device is calculated.
+To run in both software and hardware mode, the flags `RUN_SW` and `RUN_HW` must be set, and the `DEBUG` flag must be unset. Using this mode provides timing results for both the software version of the classifier running exclusively on the PS of the Zynq device and the version of the classifier accelerated by kNN-STUFF. Also, the performance improvement of the classifier using the kNN-STUFF over the version using only the PS of the Zynq device is calculated.
