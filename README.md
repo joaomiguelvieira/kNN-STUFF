@@ -2,7 +2,7 @@
 
 K-Nearest Neighbors STreaming Unit for FPGA (kNN-STUFF) is a scalable RTL implementation of the KNN classifier. Since the design is highly reconfigurable, kNN-STUFF can be implemented in FPGAs of all sizes. kNN-STUFF can be configured to achieve optimum parallelism in terms of the number of testing samples being classified at once or fastest classification of a single sample. Also, depending on the target device, more accelerators can be instantiated to increase performance.
 
-This repository contains all the necessary files to rebuilt a project with kNN-STUFF. For testing purposes, please refer to the [KNNSim repository](https://github.com/joaomiguelvieira/KNNSim), which includes a tuned version of the KNN classifier suited to achieve maximum performance in general purpose processors.
+This repository contains all the necessary files to rebuilt a project with kNN-STUFF. For testing purposes, please refer to the [KNNSim repository](https://github.com/joaomiguelvieira/KNNSim), which includes an optimized version of the KNN classifier suited to achieve maximum performance in general purpose processors.
 
 - [Content of this repository](#content-of-this-repository)
 - [Pre-requisites](#pre-requisites)
@@ -17,12 +17,15 @@ This repository contains all the necessary files to rebuilt a project with kNN-S
   - [Software and dataset parameters](#software-and-dataset-parameters)
   - [Add/remove accelerators and clusters of accelerators](#addremove-accelerators-and-clusters-of-accelerators)
   - [Software run modes](#software-run-modes)
+- [How to cite](#how-to-cite)
 
 ## Content of this repository
+* `/docs`: contains additional documentation about this work;
 * `/img`: contains the images used in this tutorial;
 * `/rtl`: contains the VHDL files and the Xilinx IP files to generate the custom IP cores;
 * `/scripts`: contains auxiliary scripts to help to build the project;
-* `/src`: contains the source code of the KNN classifier.
+* `/src`: contains the source code of the KNN classifier;
+* `/video_IEEEAccess`: contains a video that sumarizes the operation principles of kNN-STUFF.
 
 ## Pre-requisites
 To use kNN-STUFF, the minimum requisits are demanded:
@@ -239,3 +242,22 @@ To run in only software mode, the `RUN_SW` flag must be set, and all the other f
 To run in only hardware mode, the `RUN_HW` flag must be set, and all the other flags must be unset. Using this mode provides timing results for the version of the classifier accelerated by kNN-STUFF.
 
 To run in both software and hardware mode, the flags `RUN_SW` and `RUN_HW` must be set, and the `DEBUG` flag must be unset. Using this mode provides timing results for both the software version of the classifier running exclusively on the PS of the Zynq device and the version of the classifier accelerated by kNN-STUFF. Also, the performance improvement of the classifier using the kNN-STUFF over the version using only the PS of the Zynq device is calculated.
+
+## How to cite
+```
+@article{DBLP:journals/access/VieiraDN19,
+  author    = {Jo{\~{a}}o Vieira and
+               Rui Policarpo Duarte and
+               Hor{\'{a}}cio C. Neto},
+  title     = {kNN-STUFF: kNN STreaming Unit for Fpgas},
+  journal   = {{IEEE} Access},
+  volume    = {7},
+  pages     = {170864--170877},
+  year      = {2019},
+  url       = {https://doi.org/10.1109/ACCESS.2019.2955864},
+  doi       = {10.1109/ACCESS.2019.2955864},
+  timestamp = {Fri, 27 Dec 2019 21:13:21 +0100},
+  biburl    = {https://dblp.org/rec/bib/journals/access/VieiraDN19},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+```
